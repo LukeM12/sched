@@ -1,0 +1,166 @@
+<html>
+<head>
+ <style>
+#header {
+    background-color:#cc0000;
+    color:white;
+    text-align:center;
+    padding:5px;
+}
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:300px;
+    float:left;
+    padding:5px;
+}
+#section {
+    width:350px;
+    float:left;
+    padding:10px;
+}
+#footer {
+    background-color:#cc0000;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px;
+}
+#loginView {
+}
+#signupView {
+}
+</style>
+<script>
+	function SignUp(){
+		var div1 = document.getElementById("loginView"),
+		div2 = document.getElementById("singupView");
+			
+		div1.style.display='none';
+		div2.style.display='block';
+	}
+		
+	function Login(){
+		var div1 = document.getElementById("loginView"),
+		div2 = document.getElementById("singupView");
+			
+		div1.style.display='block';
+		div2.style.display='none';
+	}
+</script>
+</head>
+<body>
+
+<div id="header">
+
+</div>
+
+<div id="nav">
+	<table>
+	<tr><td><a id="home" href="" > Home </a></td></tr>
+	<tr><td><a id="login" href="" onclick="Login();return false;"> Login with Student Number</a></td></tr>
+	<tr><td><a id="signup" href="" onclick="SignUp();return false;"> Sign up for account</a></td></tr>
+	</table>
+</div>
+
+<div id="section">
+<div id="loginView">
+	<form method="post" action="">
+	<table>
+		<tr>
+			<td>Student Number:</td>
+			<td><input name="StudentNumber" id="studentNum" type="text"/></td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td>
+				<input name="Password" id="password" type="password"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<div id="singupView" style="display:none">
+	<form method="post" action="">
+	<table>
+		<tr>
+			<td>Student Number:</td>
+			<td><input name="StudentNumber" id="studentNum" type="text"/></td>
+		</tr>
+		<tr>
+			<td>First Name:</td>
+			<td>
+				<input name="FirstName" id="firstName" type="text"
+				onkeyup="validateStringField('firstName','confirmLastValidate');"/>
+				<span id="confirmLastValidate" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr>
+			<td>Last Name:</td>
+			<td>
+				<input name="LastName" id="lastName" type="text"
+				onkeyup="validateStringField('lastName','confirmFirstValidate');"/>
+				<span id="confirmFirstValidate" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr></tr>
+		<tr>
+			<td>Password:</td>
+			<td>
+				<input name="Password" id="password" type="password"
+				onkeyup="validatePassword();"/>
+				<span id="confirmPassValidate" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr>
+			<td>Confirm Password:</td>
+			<td>
+				<input name="ConfPassword" id="confPass" type="password"
+				onkeyup="checkPasswordMatch(); return false;"/>
+				<span id="confirmPassMatch" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr></tr>
+		<tr>
+			<td>Program:</td>
+			<td>
+				<select name="program">
+				<option value="blank"></option>
+				<option value="ee"> EE </option>
+				<option value="cse"> CSE </option>
+				<option value="se"> SE </option>
+				<option value="ce"> CE </option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>On/Off Course:</td>
+			<td>
+				<select name="onOffCourse">
+				<option value="blank"></option>
+				<option value="onCourse"> On </option>
+				<option value="offCourse"> Off </option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="1" style="text-align:center-left;">
+				<input id="signUpBut" type="submit" value="Sign Up" 
+				style="width:90%"/>
+			</td>
+			<td colspan="1" style="text-align:center-left;">
+				<input id="cancelSignUp" type="button" value="Cancel"
+				style="width:90%"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+</div>
+
+<div id="footer">
+</div>
+
+</body>
+</html>
