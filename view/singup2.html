@@ -1,0 +1,124 @@
+<html>
+<head>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="validation.js"></script>
+	<script type="text/javascript" src="viewControl.js"></script>
+</head>
+<body>
+
+<div id="header">
+
+</div>
+
+<div id="nav">
+	<table>
+	<tr><td><a id="home" href="" > Home </a></td></tr>
+	<tr><td><a id="login" href="" onclick="Login('loginView','singupView');return false;"> Login with Student Number</a></td></tr>
+	<tr><td><a id="signup" href="" onclick="SignUp('loginView','singupView');return false;"> Sign up for account</a></td></tr>
+	</table>
+</div>
+
+<div id="section">
+<div id="loginView">
+	<form method="post" action="">
+	<table>
+		<tr>
+			<td>Student Number:</td>
+			<td><input name="StudentNumber" id="studentNum" type="text"/></td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td>
+				<input name="Password" id="password" type="password"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<div id="singupView" style="display:none">
+	<form method="post" action="singup.php" onsubmit="return Validation.validateSignUpForm();">
+	<table>
+		<tr>
+			<td>Student Number:</td>
+			<td>
+				<input name="StudentNumber" id="studentNum" type="text"
+				onkeyup="Validation.validateStudentNumberField();"/>
+				<span id="confirmStudentNumValidate" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr>
+			<td>First Name:</td>
+			<td>
+				<input name="FirstName" id="firstName" type="text"
+				onkeyup="Validation.validateStringField('firstName','confirmLastValidate');"/>
+				<span id="confirmLastValidate" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr>
+			<td>Last Name:</td>
+			<td>
+				<input name="LastName" id="lastName" type="text"
+				onkeyup="Validation.validateStringField('lastName','confirmFirstValidate');"/>
+				<span id="confirmFirstValidate" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr></tr>
+		<tr>
+			<td>Password:</td>
+			<td>
+				<input name="Password" id="password" type="password"
+				onkeyup="Validation.validatePassword();"/>
+				<span id="confirmPassValidate" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr>
+			<td>Confirm Password:</td>
+			<td>
+				<input name="ConfPassword" id="confPass" type="password"
+				onkeyup="Validation.checkPasswordMatch(); return false;"/>
+				<span id="confirmPassMatch" class="confirmMessage"></span>
+			</td>
+		</tr>
+		<tr></tr>
+		<tr>
+			<td>Program:</td>
+			<td>
+				<select name="program">
+				<option value="blank"></option>
+				<option value="ee"> EE </option>
+				<option value="cse"> CSE </option>
+				<option value="se"> SE </option>
+				<option value="ce"> CE </option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>On/Off Course:</td>
+			<td>
+				<select name="onOffCourse">
+				<option value="blank"></option>
+				<option value="onCourse"> On </option>
+				<option value="offCourse"> Off </option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="1" style="text-align:center-left;">
+				<input id="signUpBut" type="submit" value="Sign Up" 
+				style="width:90%"/>
+			</td>
+			<td colspan="1" style="text-align:center-left;">
+				<input id="cancelSignUp" type="button" value="Cancel"
+				style="width:90%"/>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+</div>
+
+<div id="footer">
+</div>
+
+</body>
+</html>
