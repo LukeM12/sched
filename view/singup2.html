@@ -20,7 +20,7 @@
 
 <div id="section">
 <div id="loginView">
-	<form method="post" action="server/server1.php" onsubmit="return Validation.validateLoginForm();">
+	<form method="post" action="server/server.php" onsubmit="return Validation.validateLoginForm();">
 	<table>
 		<tr>
 			<td>Student Number:</td>
@@ -108,6 +108,7 @@
 		</tr>
 		<tr>
 			<td colspan="1" style="text-align:center-left;">
+				<input type="hidden" value="createaccount" name="typeofrequest"/>
 				<input id="signUp" type="submit" value="Sign Up" 
 				style="width:90%"/>
 			</td>
