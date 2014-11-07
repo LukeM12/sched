@@ -17,6 +17,14 @@ class database{
 		return $this->connection->query($sql);
 	}
 	
+	function fetchAssoc($sql_query){
+		return $sql_query->fetch_assoc();
+	}
+	
+	function realEscStr($string){
+		return $this->connection->escape_string($string);
+	}
+	
 	function getError(){
 		return mysqli_error($this->connection);
 	}

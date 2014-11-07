@@ -36,4 +36,35 @@
 			}
 		}
 	}
+	
+	if($type == "login")
+	{
+		// Minimum req to prevent php injection
+		$sql = sprintf(
+				"SELECT*FROM users WHERE student_num='%s'",
+				$data->realEscStr($_POST['StudentNum']));
+		$rows = $data->execute($sql); //Retrieve user from table 
+		$num = $rows->num_rows;
+		if($num>0)
+		{
+			$user_info = $data->fetchAssoc($rows); //Fetch user info
+			$db_password = $user_info['password'];
+			$password = $_POST['Password'];
+			if($password == $db_password)
+			{
+				header('Refresh:1;url=view/loggedin.html');
+				echo "Successfully logged in.";
+			}
+			else
+			{
+				header('Refresh:1;url=/');
+				echo "Password is incorrect. Please enter a valid password.";
+			}
+		}
+		else
+		{
+			header('Refresh:1;url=/');
+			echo "Account does not exist. Please create an account.";
+		}
+	}
 ?>
