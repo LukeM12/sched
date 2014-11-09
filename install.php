@@ -1,7 +1,7 @@
 <?php
 	require_once("model/db.php"); //php file which will contain the database class
 	$data = new database(""); //This name has to be changed to the name of our database
-	$type ="createaccount";// $_POST['typeofrequest'];
+	$type = $_POST['typeofrequest'];
 
 	if($type == "createaccount")
     {
@@ -9,10 +9,14 @@
 	}
 	if($type == "login")
 	{
+		Login($data);
+	}
+	function Login($data){
+		$login = $_POST['StudentNum'];
 		// Minimum req to prevent php injection
 		$sql = sprintf(
 				"SELECT*FROM users WHERE student_num='%s'",
-				$data->realEscStr($_POST['StudentNum']));
+				$data->realEscStr($login));
 		$rows = $data->execute($sql); //Retrieve user from table 
 		$num = $rows->num_rows;
 		if($num>0)
@@ -24,6 +28,7 @@
 			{
 				header('Refresh:1;url=view/loggedin.html');
 				echo "Successfully logged in.";
+				setcookie("user", $login, time() + 3600, "/");
 			}
 			else
 			{

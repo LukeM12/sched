@@ -20,15 +20,17 @@ xmlhttp.onreadystatechange=function()
     document.getElementById("maincontent").innerHTML=xmlhttp.responseText;
     }
 }
-xmlhttp.open("GET","view/signup.html",true);
+xmlhttp.open("GET","view/singup2.html",true);
 xmlhttp.send();
 }
 </script>
+<script type="text/javascript" src="validation.js"></script>
+<script type="text/javascript" src="viewControl.js"></script>
 <body>
     <h1>Welcome to the Student app</h1>
 	<div id="maincontent">
 	<button onclick="loadpage()">click me</button>
-        <a href="view/signup.html"> Hello World</a>
+        <a href="view/singup2.html"> Hello World</a>
     </div>
 </body>
 </html>
