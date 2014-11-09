@@ -2,9 +2,9 @@
 class database{
 	/*When creating class connect to database*/
 	function __construct($db){
-		$host = "localhost";
+		$host = "127.0.0.1";
 		$user = "root";
-		$password = "";
+		$password = "HelpMe";
 		if ($db!=''){
 			$this->connection = mysqli_connect($host,$user,$password,$db);
 		}
@@ -12,7 +12,7 @@ class database{
 			$this->connecion = mysqli_connect($host,$user,$password);
 		}
 	}
-	
+	/* execute the current query instruction */		
 	function execute($sql){
 		return $this->connection->query($sql);
 	}
