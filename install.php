@@ -9,6 +9,35 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
+    $studentID = $_POST['StudentNum']; 
+    $password = $_POST['Password']; 
+    Login($DB, $studentID, $password);
+    
+    
+    
+    function Login($DB, $studentID, $password){
+        $sql = 'SELECT * FROM student where studentID='.$studentID;// WHERE studentID=' + 223;//$studentID;// +'AND PASSWORD="'+$password +'"';
+        $result = $DB->execute($sql);
+
+        echo '<h2><b>Welcome</b></h2>'; 
+        
+        while($row = mysqli_fetch_assoc($result)) {
+            echo "<p><h3><b><i> " . $row["name"]. "</i></b></h1></p> - ID: " . $row["studentID"]. " ";
+
+            //TODO - create a method to parse and display the accomplished for that student
+            //select * from courses_Taken where studentID= $studentID;
+            //For each row in result
+            //Put into a pretty table, or list or something
+        }
+        
+        /*foreach($result as $row) {
+            echo "<tr>";
+            echo "<td><b>" . $row['studentID'] . "</b></td>";
+            echo "<td> <h1>" . $row['name'] . "</h1></td>";
+            echo "</tr>";   
+        }*/
+    }
+
     
     /*
      * Description: Initiate our database
@@ -43,6 +72,7 @@
                     studentID int NOT NULL,
                     name varchar(255),
                     onCourse text,
+                    password varchar(255),
                     coursesTaken varchar(255),
                     PRIMARY KEY(studentID)
              );";
@@ -57,16 +87,40 @@
                     FOREIGN KEY (courseID) references course(courseID)
             );";
         $DB->execute($sql);     
+    testInitTables($DB);
+    }
 
+    function displayStudent($result){
+        foreach($result as $row) {
+                echo "<tr>";
+                echo "<td><b>" . $row['studentID'] . "</b></td>";
+                echo "<td> <h1>" . $row['name'] . "</h1></td>";
+                echo "</tr>";        
+            //Insert the test here;
+        }
+    }
+
+    function testInitTables($DB) {
+        //set up
         $sql = "INSERT INTO course(courseID, prereq) values ('ELEC 2501', 'Bruh');";
         $DB->execute($sql);
-        $sql = "INSERT INTO student(studentID, name, onCourse, coursesTaken) values (223, 'Jim JOnes', 'YES', 'ECOR 1101 and ELEC 2501');";
+        $sql = "INSERT INTO student(studentID, name, onCourse, password, coursesTaken) values (223, 'Jim', 'YES', 'Pass', 'ECOR 1101 and ELEC 2501');";
         $DB->execute($sql);
 
         $sql = "INSERT INTO courses_Taken(studentID, courseID) values (223, 'ELEC 2501');";
         $DB->execute($sql);
+        $sql = "INSERT INTO courses_Taken(studentID, courseID) values (223, 'ELEC 2501');";
+        $DB->execute($sql);
+        $sql = "select * from student;";
+        $result = $DB->execute($sql);
+        foreach($result as $row) {
+  //              echo "<tr>";
+//                echo "<td><b>" . $row['studentID'] . "</b></td>";
+    //            echo "<td> <h1>" . $row['name'] . "</h1></td>";
+      //          echo "</tr>";        
+            //Insert the test here;
+        }
     }
-
 
    /* 
     //Evalute the kind of request that has been processed
