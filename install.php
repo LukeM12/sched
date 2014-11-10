@@ -41,25 +41,30 @@
        //Make the student table  
         $sql = "CREATE TABLE student(
                     studentID int NOT NULL,
-                    FirstName varchar(255),
+                    name varchar(255),
                     onCourse text,
                     coursesTaken varchar(255),
                     PRIMARY KEY(studentID)
              );";
+        $DB->execute($sql);
         //Make the courses the student has taken table
         //This table is actually coupled between student and course, and there will be copies of both the student and the course but not combined
         $sql = "CREATE TABLE courses_Taken(
                     studentID int NOT NULL,
+                    courseID varchar(255) NOT NULL,
+                    entry int,
                     FOREIGN KEY (studentID) references student(studentID),
-
-                    courseTaken varchar(255),
-                    FOREIGN KEY(courseTaken) references course(courseID),
-    
-                    courseID varchar(255) NOT NULL
+                    FOREIGN KEY (courseID) references course(courseID)
             );";
-                    
+        $DB->execute($sql);     
+
+        $sql = "INSERT INTO course(courseID, prereq) values ('ELEC 2501', 'Bruh');";
         $DB->execute($sql);
-        echo "Hello World NUMBER $";
+        $sql = "INSERT INTO student(studentID, name, onCourse, coursesTaken) values (223, 'Jim JOnes', 'YES', 'ECOR 1101 and ELEC 2501');";
+        $DB->execute($sql);
+
+        $sql = "INSERT INTO courses_Taken(studentID, courseID) values (223, 'ELEC 2501');";
+        $DB->execute($sql);
     }
 
 
