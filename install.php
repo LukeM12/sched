@@ -1,23 +1,47 @@
+<!-- Author : Luke Morrison
+              Matt 
+              Volod 
+     Email : lukemorrison@carleton.cmail.ca
+     -->
 <?php
 	require_once("model/db.php"); //php file which will contain the database class
-	$blob = new database(""); //This name has to be changed to the name of our database
+	
+    $DB = new database(""); //This name has to be changed to the name of our database
+    $DB = InitDB($DB);
+    initTables($DB);
     
-    $data->execute($sql);
-
+    /*
+     * Description: Initiate our database
+     * param: an Empty Database instance blob
+     * return: a live instance of our DB for this site
+     **/
     function InitDB($DB){
         $Students = "CREATE DATABASE IF NOT EXISTS uni";
-        $blob->execute($Students);
-        $data = new database("uni");
+        $DB->execute($Students);
+        $DB = new database("uni");
+        return $DB;
+    }
+    /*
+     * Description: Create the necessary tables for the site
+     * param: A live instance of the database
+     * return: implicit -> the tables are now produced //Return Bool?
+     **/
+
+    function initTables($DB){
+        //Make the courses table
         $sql = "CREATE TABLE course(
-                    id course int NOT NULL,
-                    onCourse text, 
+                    courseid int NOT NULL,
                     FirstName varchar(255)
              );";
+        $DB->execute($sql);
+       //Make the student table  
         $sql = "CREATE TABLE student(
                     id int NOT NULL,
                     onCourse text, 
                     FirstName varchar(255)
              );";
+        $DB->execute($sql);
+        echo "Hello World NUMBER $";
     }
 
 
