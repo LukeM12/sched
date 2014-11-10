@@ -14,7 +14,11 @@
     Login($DB, $studentID, $password);
     
     
-    
+    /*
+     * Description: 
+     * param: 
+     * return: 
+     **/
     function Login($DB, $studentID, $password){
         $sql = 'SELECT * FROM student where studentID='.$studentID;// WHERE studentID=' + 223;//$studentID;// +'AND PASSWORD="'+$password +'"';
         $result = $DB->execute($sql);
@@ -22,23 +26,15 @@
         echo '<h2><b>Welcome</b></h2>'; 
         
         while($row = mysqli_fetch_assoc($result)) {
-            echo "<p><h3><b><i> " . $row["name"]. "</i></b></h1></p> - ID: " . $row["studentID"]. " ";
-
-            //TODO - create a method to parse and display the accomplished for that student
+            echo "<p><h3><b><i> " . $row["name"]. "</i></b></h3></p> - ID: " . $row["studentID"]. " ";
+            //Matt this is for you
+            //TODO - display the accomplished  courses for that student. below is an sql eaxmple of this
             //select * from courses_Taken where studentID= $studentID;
             //For each row in result
-            //Put into a pretty table, or list or something
+            //Put into a pretty table, 
+            //You can call this function display_courses(){ and have it accept ($studentID, and $DB
         }
-        
-        /*foreach($result as $row) {
-            echo "<tr>";
-            echo "<td><b>" . $row['studentID'] . "</b></td>";
-            echo "<td> <h1>" . $row['name'] . "</h1></td>";
-            echo "</tr>";   
-        }*/
     }
-
-    
     /*
      * Description: Initiate our database
      * param: an Empty Database instance blob
@@ -90,6 +86,11 @@
     testInitTables($DB);
     }
 
+    /*
+     * Description: Create the necessary tables for the site
+     * param: A live instance of the database
+     * return: implicit -> the tables are now produced //Return Bool?
+     **/
     function displayStudent($result){
         foreach($result as $row) {
                 echo "<tr>";
@@ -100,24 +101,33 @@
         }
     }
 
+    /*
+     * Description: Create the necessary tables for the site
+     * param: A live instance of the database
+     * return: implicit -> the tables are now produced //Return Bool?
+     **/
     function testInitTables($DB) {
         //set up
         $sql = "INSERT INTO course(courseID, prereq) values ('ELEC 2501', 'Bruh');";
         $DB->execute($sql);
+        
         $sql = "INSERT INTO student(studentID, name, onCourse, password, coursesTaken) values (223, 'Jim', 'YES', 'Pass', 'ECOR 1101 and ELEC 2501');";
         $DB->execute($sql);
-
+        
         $sql = "INSERT INTO courses_Taken(studentID, courseID) values (223, 'ELEC 2501');";
         $DB->execute($sql);
+        
         $sql = "INSERT INTO courses_Taken(studentID, courseID) values (223, 'ELEC 2501');";
         $DB->execute($sql);
+        
         $sql = "select * from student;";
         $result = $DB->execute($sql);
+        
         foreach($result as $row) {
-  //              echo "<tr>";
-//                echo "<td><b>" . $row['studentID'] . "</b></td>";
-    //            echo "<td> <h1>" . $row['name'] . "</h1></td>";
-      //          echo "</tr>";        
+            //echo "<tr>";
+            //echo "<td><b>" . $row['studentID'] . "</b></td>";
+            //echo "<td> <h1>" . $row['name'] . "</h1></td>";
+            //echo "</tr>";        
             //Insert the test here;
         }
     }
