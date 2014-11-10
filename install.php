@@ -28,18 +28,36 @@
      **/
 
     function initTables($DB){
+        
         //Make the courses table
+        //The prereqs are implicit in a string
         $sql = "CREATE TABLE course(
-                    courseid int NOT NULL,
-                    FirstName varchar(255)
+                    courseID varchar(255) NOT NULL,
+                    prereq text,
+                    PRIMARY KEY(courseID)
              );";
         $DB->execute($sql);
+
        //Make the student table  
         $sql = "CREATE TABLE student(
-                    id int NOT NULL,
-                    onCourse text, 
-                    FirstName varchar(255)
+                    studentID int NOT NULL,
+                    FirstName varchar(255),
+                    onCourse text,
+                    coursesTaken varchar(255),
+                    PRIMARY KEY(studentID)
              );";
+        //Make the courses the student has taken table
+        //This table is actually coupled between student and course, and there will be copies of both the student and the course but not combined
+        $sql = "CREATE TABLE courses_Taken(
+                    studentID int NOT NULL,
+                    FOREIGN KEY (studentID) references student(studentID),
+
+                    courseTaken varchar(255),
+                    FOREIGN KEY(courseTaken) references course(courseID),
+    
+                    courseID varchar(255) NOT NULL
+            );";
+                    
         $DB->execute($sql);
         echo "Hello World NUMBER $";
     }
