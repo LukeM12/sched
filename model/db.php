@@ -4,12 +4,12 @@ class database{
 	function __construct($db){
 		$host = "127.0.0.1";
 		$user = "root";
-		$password = "HelpMe";
+		$password = "oops123";
 		if ($db!=''){
 			$this->connection = mysqli_connect($host,$user,$password,$db);
 		}
 		else{
-			$this->connecion = mysqli_connect($host,$user,$password);
+			$this->connection = mysqli_connect($host,$user,$password);
 		}
 	}
 	/* execute the current query instruction */		
