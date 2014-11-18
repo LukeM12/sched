@@ -9,32 +9,7 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
-    $studentID = $_POST['StudentNum']; 
-    $password = $_POST['Password']; 
-    Login($DB, $studentID, $password);
     
-    
-    /*
-     * Description: 
-     * param: 
-     * return: 
-     **/
-    function Login($DB, $studentID, $password){
-        $sql = 'SELECT * FROM student where studentID='.$studentID;// WHERE studentID=' + 223;//$studentID;// +'AND PASSWORD="'+$password +'"';
-        $result = $DB->execute($sql);
-
-        echo '<h2><b>Welcome</b></h2>'; 
-        
-        while($row = mysqli_fetch_assoc($result)) {
-            echo "<p><h3><b><i> " . $row["name"]. "</i></b></h3></p> - ID: " . $row["studentID"]. " ";
-            //Matt this is for you
-            //TODO - display the accomplished  courses for that student. below is an sql eaxmple of this
-            //select * from courses_Taken where studentID= $studentID;
-            //For each row in result
-            //Put into a pretty table, 
-            //You can call this function display_courses(){ and have it accept ($studentID, and $DB
-        }
-    }
     /*
      * Description: Initiate our database
      * param: an Empty Database instance blob
@@ -56,7 +31,7 @@
         
         //Make the courses table
         //The prereqs are implicit in a string
-        $sql = "CREATE TABLE course(
+        $sql = "CREATE TABLE IF NOT EXISTS course(
                     courseID varchar(255) NOT NULL,
                     prereq text,
                     PRIMARY KEY(courseID)
@@ -64,7 +39,7 @@
         $DB->execute($sql);
 
        //Make the student table  
-        $sql = "CREATE TABLE student(
+        $sql = "CREATE TABLE IF NOT EXISTS student(
                     studentID int NOT NULL,
                     name varchar(255),
                     onCourse text,
@@ -75,15 +50,14 @@
         $DB->execute($sql);
         //Make the courses the student has taken table
         //This table is actually coupled between student and course, and there will be copies of both the student and the course but not combined
-        $sql = "CREATE TABLE courses_Taken(
+        $sql = "CREATE TABLE IF NOT EXISTS courses_Taken(
                     studentID int NOT NULL,
                     courseID varchar(255) NOT NULL,
                     entry int,
                     FOREIGN KEY (studentID) references student(studentID),
                     FOREIGN KEY (courseID) references course(courseID)
             );";
-        $DB->execute($sql);     
-    testInitTables($DB);
+        $DB->execute($sql);
     }
 
     /*
@@ -131,101 +105,4 @@
             //Insert the test here;
         }
     }
-
-   /* 
-    //Evalute the kind of request that has been processed
-	if($type == "createaccount")
-    {
-        echo "Hello World";
-        CreateAccount($data);
-	}
-	if($type == "login")
-	{
-		Login($data);
-	}
-	function Login($data){
-		$login = $_POST['StudentNum'];
-		// Minimum req to prevent php injection
-		$sql = sprintf(
-				"SELECT*FROM users WHERE student_num='%s'",
-				$data->realEscStr($login));
-		$rows = $data->execute($sql); //Retrieve user from table 
-		$num = $rows->num_rows;
-		if($num>0)
-		{
-            //This is where the cookie is set
-			$user_info = $data->fetchAssoc($rows); //Fetch user info
-			$db_password = $user_info['password'];
-			$password = $_POST['Password'];
-			if($password == $db_password)
-			{
-				header('Refresh:1;url=view/loggedin.html');
-				echo "Successfully logged in.";
-				setcookie("user", $login, time() + 3600, "/");
-			}
-			else
-			{
-				header('Refresh:1;url=/');
-				echo "Password is incorrect. Please enter a valid password.";
-			}
-		}
-		else
-		{
-			header('Refresh:1;url=/');
-			echo "Account does not exist. Please create an account.";
-		}
-	}
-	function CreateAccount($data){
-		$login = $_POST['StudentNum'];
-//First create the database
-        $sql = "CREATE TABLE STUDENT(
-                    id int NOT NULL,
-                    onCourse text, 
-                    FirstName varchar(255)
-                );";
-        
-                    
-// Create database
-        $sql = "CREATE DATABASE myDB";
-        if ($conn->query($sql) === TRUE) {
-                echo "Database created successfully";
-        } else {
-                echo "Error creating database: " . $conn->error;
-        }
-
-        $myDB = 
-		$table = $data->execute($sql);
-        //$sql = "SELECT*FROM users WHERE student_num='$login'";
-		//$rows = $data->execute($sql);
-		//$num = $rows->num_rows;
-	
-//        if($num > 0)
-//		{
-//			header('Refresh:1;url=/');
-//			echo "Account already exists. Please login";
-//		}
-
-
-	//	else
-	//	{
-	//		$password = $_POST['Password'];
-	//		$firstName = $_POST['FirstName'];
-			//$lastName = $_POST['LastName'];
-			//$program = $_POST['program'];
-			//$onOffCourse = $_POST['onOffCourse'];
-			
-			//$sql = "INSERT INTO users VALUES('$login','$password','$firstName','$lastName','$program','$onOffCourse')";
-			//$row = $data->execute($sql);
-			//if($row)
-			//{
-		//		header('Refresh:1;url=/');
-	//			echo "Account was successfully created. Please log in.";
-//			}
-	//		else
-	//		{
-	//			echo "Failed to create account.";
-	//		}
-	//	}
-	}
-*/
 ?>
