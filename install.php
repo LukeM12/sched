@@ -12,6 +12,7 @@
     $studentID = $_POST['StudentNum']; 
     $password = $_POST['Password']; 
     Login($DB, $studentID, $password);
+    ParseCourses($DB);
     
     
     /*
@@ -100,6 +101,38 @@
             //Insert the test here;
         }
     }
+    
+    /*
+     * Description: Initiate our database
+     * param: an Empty Database instance blob
+     * return: a live instance of our DB for this site
+     **/
+    function ParseCourses($DB){
+       /* $file = $_FILES[csv][tmp_name];
+        $csv_file = CSV_PATH . "model/data.csv"; // Name of your CSV file
+        $csvfile = fopen($csv_file, 'r');
+        $csv_array = explode(",", $csv_data[$i]);
+        $theData = fgets($csvfile);
+        $i = 0;*/
+        $row=0;
+        if (($handle = fopen("model/data.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $num = count($data);
+                echo "<p> $num fields in line $row: <br /></p>\n";
+                $row++;
+                for ($c=0; $c < $num; $c++) {
+                    echo $data[$c] . "<br />\n";
+                }
+            }
+        fclose($handle);
+        }
+}
+
+       /* $Students = "CREATE DATABASE IF NOT EXISTS uni";
+        $DB->execute($Students);
+        $DB = new database("uni");
+        return $DB;
+    }*/
 
     /*
      * Description: Create the necessary tables for the site
@@ -108,7 +141,7 @@
      **/
     function testInitTables($DB) {
         //set up
-        $sql = "INSERT INTO course(courseID, prereq) values ('ELEC 2501', 'Bruh');";
+        $sql = "INSERT INTO course(courseID, prereq) values ('ELEC 2501', 'Mattias');";
         $DB->execute($sql);
         
         $sql = "INSERT INTO student(studentID, name, onCourse, password, coursesTaken) values (223, 'Jim', 'YES', 'Pass', 'ECOR 1101 and ELEC 2501');";
@@ -131,6 +164,58 @@
             //Insert the test here;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    /* 
     //Evalute the kind of request that has been processed
