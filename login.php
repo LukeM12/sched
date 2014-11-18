@@ -6,33 +6,62 @@
 <?php
     require_once("model/db.php");
     require_once("install.php");
-    
-    $studentID = $_POST['StudentNum']; 
-    $password = $_POST['Password']; 
-    Login($DB, $studentID, $password);
-    ParseCourses($DB);
-    
-    /*
-     * Description: 
-     * param: 
-     * return: 
-     **/
-    function Login($DB, $studentID, $password){
-        $sql = 'SELECT * FROM student where studentID='.$studentID;// WHERE studentID=' + 223;//$studentID;// +'AND PASSWORD="'+$password +'"';
-        $result = $DB->execute($sql);
+    $data = new database("uni");
+    //$studentID = $_POST['StudentNum']; 
+    //$password = $_POST['Password']; 
+	
+	$type = $_POST["typeofrequest"];
 
-        echo '<h2><b>Welcome</b></h2>'; 
-        
-        while($row = mysqli_fetch_assoc($result)) {
-            echo "<p><h3><b><i> " . $row["name"]. "</i></b></h3></p> - ID: " . $row["studentID"]. " ";
-            //Matt this is for you
-            //TODO - display the accomplished  courses for that student. below is an sql eaxmple of this
-            //select * from courses_Taken where studentID= $studentID;
-            //For each row in result
-            //Put into a pretty table, 
-            //You can call this function display_courses(){ and have it accept ($studentID, and $DB
-        }
-    }
+if($type == "login"){
+	Login($data);
+}
+else if($type == "createaccount"){
+	CreateAccount();
+}
+	//ParseCourses($DB);
+	
+	
+	
+   
+   function Login($data){
+		$login = $_POST['StudentNum'];
+		
+		// Minimum req to prevent php injection
+		/*$sql = sprintf(
+				"SELECT*FROM users WHERE student_num='%s'",
+				$data->realEscStr($login));
+				*/
+		$sql = 'SELECT * FROM student WHERE studentID="$login"';		
+		$rows = $data->execute($sql); //Retrieve user from table 
+		echo $data->getError();
+		$num = $rows->num_rows;
+		
+		if($num>0)
+		{
+            //This is where the cookie is set
+			$user_info = $data->fetchAssoc($rows); //Fetch user info
+			$db_password = $user_info['password'];
+			$password = $_POST['Password'];
+			if($password == $db_password)
+			{
+				//header('Refresh:1;url=view/loggedin.html');
+				echo "Successfully logged in.";
+				setcookie("user", $login, time() + 3600, "/");
+			}
+			else
+			{
+				//header('Refresh:1;url=/');
+				echo "Password is incorrect. Please enter a valid password.";
+				
+			}
+		}
+		else
+		{
+			//header('Refresh:1;url=/');
+			echo "Account does not exist. Please create an account.";
+		}
+	}
+    
     
     /*
      * Description: Create the necessary tables for the site
@@ -49,7 +78,40 @@
         }
     }
        
-    /*
+function CreateAccount(){
+		
+                    
+
+		$connection = mysqli_connect("localhost", "root", "oops123", "uni");
+		
+	
+			
+			
+			
+			$login = $_POST['StudentNum'];
+			$password = $_POST['Password'];
+			$firstName = $_POST['FirstName'];
+			$lastName = $_POST['LastName'];
+			$program = $_POST['program'];
+			$onOffCourse = $_POST['onOffCourse'];
+	   
+		
+		$sql = "INSERT INTO student (studentID, name, onCourse, password) VALUES('$login','$firstName', '$onOffCourse', '$password')";
+		if($connection->query($sql)){
+			echo "The record is added";
+		}
+		else
+		{
+			echo "The record cannot be added ". mysqli_error($connection);
+		}
+		//mysqli_error($connection);
+		if($onOffCourse == 'offCourse'){
+					header('Refresh:1;url=/view/offCourse.html');
+					
+		}
+}  
+
+	/*
      * Description: Initiate our database
      * param: an Empty Database instance blob
      * return: a live instance of our DB for this site

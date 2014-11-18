@@ -1,0 +1,23 @@
+.importantColumn{
+    width: 100%;
+	text-align: center;
+}
+
+
+.notimportant{
+
+width: 25%;
+text-align: center;
+}
+
+
+
+tr.spaceUnder > td
+{
+  padding-bottom: 1em;
+}
+
+
+table {
+  border-spacing: 10px;
+}
