@@ -32,11 +32,15 @@
         //Make the courses table
         //The prereqs are implicit in a string
         $sql = "CREATE TABLE IF NOT EXISTS course(
+                    subject text NOT NULL,
                     courseID varchar(255) NOT NULL,
-                    term varchar(5) NOT NULL,
+                    sequence varchar(2) NOT NULL,
+                    catalog_title varchar(255) NOT NULL,
+                    instruction_type varchar(3) NOT NULL,
                     days varchar(5) NOT NULL,
                     startTime varchar(4) NOT NULL,
                     endTime varchar(4) NOT NULL,
+                    room_cap int NOT NULL,
                     PRIMARY KEY(courseID)
              );";
         $DB->execute($sql);
@@ -79,11 +83,21 @@
                     year int NOT NULL,
                     courseID varchar(255) NOT NULL,
                     term char NOT NULL,
+                    PRIMARY KEY (courseID)
+                );";
+        $DB->execute($sql);
+        $DB->getError();
+        //Had an issue when populating the database when it had the foreign key
+        
+        /*$sql = "CREATE TABLE IF NOT EXISTS CE_program(
+                    year int NOT NULL,
+                    courseID varchar(255) NOT NULL,
+                    term char NOT NULL,
                     UNIQUE (courseID),
                     FOREIGN KEY (courseID) references course(courseID)
         );";
-        $DB->execute($sql);
-        testInitTables($DB);
+        $DB->execute($sql);*/
+        //testInitTables($DB);
     }
 
     /*
