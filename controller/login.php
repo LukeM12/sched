@@ -2,6 +2,8 @@
               Matt 
               Volod 
      Email : lukemorrison@carleton.cmail.ca
+
+     Description : login.php handles the main functions required for this app.
      -->
 <?php
     require_once("model/db.php");
@@ -12,17 +14,16 @@
 	
 	$type = $_POST["typeofrequest"];
 
-if($type == "login"){
-	Login($data);
-}
-else if($type == "createaccount"){
-	CreateAccount();
-}
+    if($type == "login"){
+        echo "Hello World we just logged in";
+        Login($data);
+    }
+    else if($type == "createaccount"){
+        echo "Hello World we just created an account";
+        CreateAccount($data);
+    }
 	//ParseCourses($DB);
 	
-	
-	
-   
    function Login($data){
 		$login = $_POST['StudentNum'];
 		
@@ -77,39 +78,30 @@ else if($type == "createaccount"){
             //Insert the test here;
         }
     }
-       
-function CreateAccount(){
-		
-                    
+           
+    function CreateAccount($data){
 
-		$connection = mysqli_connect("localhost", "root", "oops123", "uni");
-		
-	
-			
-			
-			
-			$login = $_POST['StudentNum'];
-			$password = $_POST['Password'];
-			$firstName = $_POST['FirstName'];
-			$lastName = $_POST['LastName'];
-			$program = $_POST['program'];
-			$onOffCourse = $_POST['onOffCourse'];
-	   
-		
-		$sql = "INSERT INTO student (studentID, name, onCourse, password) VALUES('$login','$firstName', '$onOffCourse', '$password')";
-		if($connection->query($sql)){
-			echo "The record is added";
-		}
-		else
-		{
-			echo "The record cannot be added ". mysqli_error($connection);
-		}
-		//mysqli_error($connection);
-		if($onOffCourse == 'offCourse'){
-					header('Refresh:1;url=/view/offCourse.html');
-					
-		}
-}  
+    		$connection = new Database("uni");
+            $login = $_POST['StudentNum'];
+            $password = $_POST['Password'];
+            $firstName = $_POST['FirstName'];
+            $lastName = $_POST['LastName'];
+            $program = $_POST['program'];
+            $onOffCourse = $_POST['onOffCourse'];
+    		$sql = "INSERT INTO student (studentID, name, onCourse, password) VALUES('$login','$firstName', '$onOffCourse', '$password')";
+    		if($connection->execute($sql)){
+    			echo "The record is added";
+    		}
+    		else
+    		{
+    			echo "The record cannot be added ". mysqli_error($connection);
+    		}
+    		//mysqli_error($connection);
+    		if($onOffCourse == 'offCourse'){
+    					header('Refresh:1;url=/view/offCourse.html');
+    					
+    		}
+    }  
 
 	/*
      * Description: Initiate our database
@@ -137,11 +129,7 @@ function CreateAccount(){
         }
     }
 
-       /* $Students = "CREATE DATABASE IF NOT EXISTS uni";
-        $DB->execute($Students);
-        $DB = new database("uni");
-        return $DB;
-    }*/
+
     
     
 ?>

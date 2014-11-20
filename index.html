@@ -2,37 +2,29 @@
 
 <head></head>
 <script>
-function loadpage()
-{
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    function loadpage()
     {
-    document.getElementById("maincontent").innerHTML=xmlhttp.responseText;
+    var xmlhttp;
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp=new XMLHttpRequest();
+      }
+    else {// code for IE6, IE5
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+    xmlhttp.onreadystatechange = function(){
+      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+        document.getElementById("maincontent").innerHTML=xmlhttp.responseText;
+        }
     }
-}
-xmlhttp.open("GET","view/singup2.html",true);
-xmlhttp.send();
-}
+    xmlhttp.open("GET","view/homepage.html",true);
+    xmlhttp.send();
+    }
 </script>
 <script type="text/javascript" src="validation.js"></script>
 <script type="text/javascript" src="viewControl.js"></script>
 <body onLoad="loadpage()">
-
-	
-	
-   
 	<div id="maincontent">
-	
     </div>
 </body>
 </html>
