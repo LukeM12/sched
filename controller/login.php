@@ -6,25 +6,16 @@
      Description : login.php handles the main functions required for this app.
      -->
 <?php
-    require_once("model/db.php");
-    require_once("install.php");
+    require_once("../model/db.php");
+    require_once("../install.php");
     $data = new database("uni");
-    //$studentID = $_POST['StudentNum']; 
-    //$password = $_POST['Password']; 
-	
-	$type = $_POST["typeofrequest"];
+    $studentID = $_POST['StudentNum']; 
+    $password = $_POST['Password']; 
+    Login($data,$studentID,$password );
 
-    if($type == "login"){
-        echo "Hello World we just logged in";
-        Login($data);
-    }
-    else if($type == "createaccount"){
-        echo "Hello World we just created an account";
-        CreateAccount($data);
-    }
-	//ParseCourses($DB);
+
 	
-   function Login($data){
+   function Login($data,$studentID,$password ){
 		$login = $_POST['StudentNum'];
 		
 		// Minimum req to prevent php injection
@@ -32,7 +23,8 @@
 				"SELECT*FROM users WHERE student_num='%s'",
 				$data->realEscStr($login));
 				*/
-		$sql = 'SELECT * FROM student WHERE studentID="$login"';		
+        
+		$sql = 'SELECT * FROM student WHERE studentID=\''.$studentID.'\'';		
 		$rows = $data->execute($sql); //Retrieve user from table 
 		echo $data->getError();
 		$num = $rows->num_rows;
@@ -47,7 +39,7 @@
 			{
 				//header('Refresh:1;url=view/loggedin.html');
 				echo "Successfully logged in.";
-				setcookie("user", $login, time() + 3600, "/");
+				//setcookie("user", $login, time() + 3600, "/");
 			}
 			else
 			{
@@ -58,8 +50,7 @@
 		}
 		else
 		{
-			//header('Refresh:1;url=/');
-			echo "Account does not exist. Please create an account.";
+            echo "<br>Account#".$studentID . " does not exist. Please create an account\n";
 		}
 	}
     

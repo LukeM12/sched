@@ -1,0 +1,19 @@
+    <form method="post" action="controller/login.php" onsubmit="return Validation.validateLoginForm();">
+    <table>
+        <tr>
+            <td>Student Number:</td>
+            <td><input class="loginField" name="StudentNum" id="loginStudentNum" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input class="loginField" name="Password" id="loginPassword" type="password"/></td>
+        </tr>
+        <tr>
+            <input type="hidden" value="login" name="typeofrequest"/>
+            <td colspan="1" style="text-align:center-left;">
+                <input id="login" type="submit" value="Login" 
+                style="width:90%"/>
+            </td>
+        </tr>
+    </table>
+    </form>
