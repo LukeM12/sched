@@ -1,137 +1,14 @@
-<!-- Home Page
-Anything that you want to remain static throughout the entire lifespan of the app
-you put in this file, or anything that needs to be controlled at a root level
-would be done from here-->
+<!DOCTYPE html>
 <html>
-
-<head>
-	<meta charset="utf-8"/>
-    <link href="view/style.css" rel="stylesheet" type="text/css">
-    <h1><b>Course App</b></h1>
-</head>
 <body>
+<p>Click the button to trigger a function that will output "Hello World" in a p element with id="demo".</p>
+<script>
 
-<div id="header">
-
-</div>
-<!--This is a poor hack and I am getting rid of it -->
-<div id="nav">
-	<table>
-	<tr><td><a id="login" href="" onclick="Login('loginView','singupView');return false;"> Login with Student Number</a></td></tr>
-	<tr><td><a id="signup" href="" onclick="SignUp('loginView','singupView');return false;"> Sign up for account</a></td></tr>
-	</table>
-</div>
-
-<div id="section">
-<script src="controller/Pages/PageControl.js">
-    
 </script>
-    <!--This is the view that handles the General Login -->
-    <div id="MainBlock" > </div>
-    <div id="loginView">
-        <form method="post" action="controller/login.php" onsubmit="return Validation.validateLoginForm();">
-        <table>
-            <tr>
-                <td>Student Number:</td>
-                <td><input class="loginField" name="StudentNum" id="loginStudentNum" type="text"/></td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td><input class="loginField" name="Password" id="loginPassword" type="password"/></td>
-            </tr>
-            <tr>
-                <input type="hidden" value="login" name="typeofrequest"/>
-                <td colspan="1" style="text-align:center-left;">
-                    <input id="login" type="submit" value="Login" 
-                    style="width:90%"/>
-                </td>
-            </tr>
-        </table>
-        </form>
-    </div>
-    
-    <!--This is the view that handles the Create Account View -->
-    <div id="singupView" style="display:none">
-        <form method="post" action="login.php" onsubmit="return Validation.validateSignUpForm();">
-        <table>
-            <tr>
-                <td>Student Number:</td>
-                <td>
-                    <input class="singupField" name="StudentNum" id="signupStudentNum" type="text"
-                    onkeyup="Validation.validateStudentNumberField();"/>
-                    <span id="confirmStudentNumValidate" class="confirmMessage"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>First Name:</td>
-                <td>
-                    <input class="singupField" name="FirstName" id="firstName" type="text"
-                    onkeyup="Validation.validateStringField('firstName','confirmLastValidate');"/>
-                    <span id="confirmLastValidate" class="confirmMessage"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>Last Name:</td>
-                <td>
-                    <input class="singupField" name="LastName" id="lastName" type="text"
-                    onkeyup="Validation.validateStringField('lastName','confirmFirstValidate');"/>
-                    <span id="confirmFirstValidate" class="confirmMessage"></span>
-                </td>
-            </tr>
-            <tr></tr>
-            <tr>
-                <td>Password:</td>
-                <td>
-                    <input class="singupField" name="Password" id="singupPassword" type="password"
-                    onkeyup="Validation.validatePassword();"/>
-                    <span id="confirmPassValidate" class="confirmMessage"></span>
-                </td>
-            </tr>c
-            <tr>
-                <td>Confirm Password:</td>
-                <td>
-                    <input class="singupField" id="confPass" type="password"
-                    onkeyup="Validation.checkPasswordMatch(); return false;"/>
-                    <span id="confirmPassMatch" class="confirmMessage"></span>
-                </td>
-            </tr>
-            <tr></tr>
-            <tr>
-                <td>Program:</td>
-                <td>
-                    <select name="program">
-                    <option value="blank"></option>
-                    <option value="ee"> EE </option>
-                    <option value="cse"> CSE </option>
-                    <option value="se"> SE </option>
-                    <option value="ce"> CE </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>On/Off Course:</td>
-                <td>
-                    <select name="onOffCourse">
-                    <option value="blank"></option>
-                    <option value="onCourse"> On </option>
-                    <option value="offCourse"> Off </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="1" style="text-align:center-left;">
-                    <input type="hidden" value="createaccount" name="typeofrequest"/>
-                    <input id="signUp" type="submit" value="Sign Up" 
-                    style="width:90%"/>
-                </td>
-            </tr>
-        </table>
-        </form>
-    </div>
-</div>
+<button onclick="myFunction()">Click me</button>
 
-<div id="footer">
-</div>
+<p id="MainBlock">Where am I?</p>
+
 
 </body>
 </html>
