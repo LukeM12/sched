@@ -36,13 +36,16 @@
 			$db_password = $user_info['password'];
 			$password = $_POST['Password'];
 			if($password == $db_password)
-			{
+            {
+                //This is where we bring the next page and
+                //show the user information about themself
 				//header('Refresh:1;url=view/loggedin.html');
 				echo "Successfully logged in.";
 				//setcookie("user", $login, time() + 3600, "/");
 			}
 			else
-			{
+            {
+                //this is where we bring them abck to the login page
 				//header('Refresh:1;url=/');
 				echo "Password is incorrect. Please enter a valid password.";
 				
@@ -50,7 +53,7 @@
 		}
 		else
 		{
-            echo "<br>Account#".$studentID . " does not exist. Please create an account\n";
+            //echo "<br>Account#".$studentID . " does not exist. Please create an account\n";
 		}
 	}
     
