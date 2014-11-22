@@ -19,7 +19,7 @@
     xmlhttp.open("GET","view/pages/home_page.html",true);
     xmlhttp.send();
     }
-    function LoadLoginPage()
+    function LoadSignupPage()
         {
         var xmlhttp;
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
