@@ -1,5 +1,7 @@
   
-
+/**
+ * These are "View Calls". They dynamically load HTML into the view without refreshing the page
+ */
   //This is basically the Page that loads All The various rudimentary navigation
   function LoadMainPage()
     {
@@ -40,8 +42,8 @@
         xmlhttp.send();
         }
 
-        
-function LoadLoginPage()
+   
+function LoadSignupPage()
     {
     var xmlhttp;
     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -59,7 +61,9 @@ function LoadLoginPage()
     xmlhttp.open("GET","view/pages/signup_page.html",true);
     xmlhttp.send();
     }
-
+/**
+ * These are Server Calls. They call php files 
+ */
     function SubmitForm()
     {
     var xmlhttp;
@@ -75,7 +79,7 @@ function LoadLoginPage()
         document.getElementById("MainContent").innerHTML=xmlhttp.responseText;
         }
     }
-    xmlhttp.open("POST","controller/login.php",true);
+ //   xmlhttp.open("POST","controller/login.php",true);
         document.getElementById("MainContent").innerHTML="Did ti worl";
     alert("Did it work");
     xmlhttp.send();

@@ -1,5 +1,11 @@
 <?php
-	
+
+//This file creates the account for the user,
+/**
+  Still requires 
+  1)sanitation of input
+  2)redirection to the right page
+  **/
 require_once("../install.php");
 require_once("../model/db.php");	
 

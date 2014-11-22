@@ -13,8 +13,12 @@
     $password = $_POST['Password']; 
     Login($data,$studentID,$password );
 
-
-	
+    /**
+     * 
+     * @param unknown $data - the database
+     * @param unknown $studentID - the users id 
+     * @param unknown $password - the user password
+     */
    function Login($data,$studentID,$password ){
 		$login = $_POST['StudentNum'];
 		
@@ -39,8 +43,8 @@
             {
                 //This is where we bring the next page and
                 //show the user information about themself
-				//header('Refresh:1;url=view/loggedin.html');
-				echo "Successfully logged in.";
+				header('Refresh:1;url=../view/offCourse.html');
+				//echo "Successfully logged in.";
 				//setcookie("user", $login, time() + 3600, "/");
 			}
 			else
@@ -58,7 +62,7 @@
 	}
     
     
-    /*
+    /**
      * Description: Create the necessary tables for the site
      * param: A live instance of the database
      * return: implicit -> the tables are now produced //Return Bool?
@@ -72,32 +76,7 @@
             //Insert the test here;
         }
     }
-           
-    function CreateAccount($data){
-
-    		$connection = new Database("uni");
-            $login = $_POST['StudentNum'];
-            $password = $_POST['Password'];
-            $firstName = $_POST['FirstName'];
-            $lastName = $_POST['LastName'];
-            $program = $_POST['program'];
-            $onOffCourse = $_POST['onOffCourse'];
-    		$sql = "INSERT INTO student (studentID, name, onCourse, password) VALUES('$login','$firstName', '$onOffCourse', '$password')";
-    		if($connection->execute($sql)){
-    			echo "The record is added";
-    		}
-    		else
-    		{
-    			echo "The record cannot be added ". mysqli_error($connection);
-    		}
-    		//mysqli_error($connection);
-    		if($onOffCourse == 'offCourse'){
-    					header('Refresh:1;url=/view/offCourse.html');
-    					
-    		}
-    }  
-
-	/*
+	/**
      * Description: Initiate our database
      * param: an Empty Database instance blob
      * return: a live instance of our DB for this site
