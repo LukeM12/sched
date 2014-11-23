@@ -11,7 +11,8 @@
     $data = new database("uni");
     $studentID = $_POST['StudentNum']; 
     $password = $_POST['Password']; 
-    Login($data,$studentID,$password );
+    //Login($data,$studentID,$password );
+				header('Refresh:1;url=/view/offCourse.html');
 
     /**
      * 
@@ -42,13 +43,15 @@
 			if($password == $db_password)
             {
                 //This is where we bring the next page and
+					header('Refresh:1;url=/view/offCourse.html');
                 //show the user information about themself
-				header('Refresh:1;url=../view/offCourse.html');
+				header('Refresh:1;url=/view/offCourse.html');
 				//echo "Successfully logged in.";
-				//setcookie("user", $login, time() + 3600, "/");
+				setcookie("user", $login, time() + 3600, "/");
 			}
 			else
             {
+					header('Refresh:1;url=/view/offCourse.html');
                 //this is where we bring them abck to the login page
 				//header('Refresh:1;url=/');
 				echo "Password is incorrect. Please enter a valid password.";
@@ -57,7 +60,7 @@
 		}
 		else
 		{
-            //echo "<br>Account#".$studentID . " does not exist. Please create an account\n";
+            echo "<br>Account#".$studentID . " does not exist. Please create an account\n";
 		}
 	}
     
