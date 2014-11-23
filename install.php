@@ -69,6 +69,8 @@
                     studentID int NOT NULL,
                     subject varchar(4) NOT NULL,
                     courseID varchar(255) NOT NULL,
+                    year int NOT NULL,
+                    term char NOT NULL,
                     entry int);";
             
         $DB->execute($sql);

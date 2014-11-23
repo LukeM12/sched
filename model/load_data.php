@@ -31,7 +31,8 @@
     echo mysqli_error($connection);
     
     testInitTables($connection);
-    populateCoursesNeeded($connection);
+    $studentID = 223;
+    populateCoursesNeeded($connection, $studentID);
 
     /*
      * Description: Create the necessary tables for the site
@@ -72,14 +73,14 @@
     /** 
     * Populates courses_Needed table
     */
-    function populateCoursesNeeded($connection) {
+    function populateCoursesNeeded($connection, $studentID) {
     
         $sql = "SELECT * FROM CE_program;";
         $result_ce_req = $connection->query($sql);
         while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
-            $sql = "SELECT * FROM courses_Taken;";
+            $sql = "SELECT * FROM courses_Taken WHERE studentID='$studentID';";
             $result_ct = $connection->query($sql);
-            checkIfCourseWasTaken($row_ce_req, $result_ct, $connection);
+            checkIfCourseWasTaken($studentID, $row_ce_req, $result_ct, $connection);
         }
         mysqli_free_result($result_ce_req);
     }
@@ -93,24 +94,29 @@
     * 
     * @todo: Check for duplicates before inserting into table 
     */
-    function checkIfCourseWasTaken($row_ce_req, $result_ct, $connection) {
+    function checkIfCourseWasTaken($studentID, $row_ce_req, $result_ct, $connection) {
         
         while($row_ct = $result_ct->fetch_array(MYSQLI_ASSOC)){
-            $studentID = $row_ct["studentID"];
             if($row_ct["courseID"]==$row_ce_req["courseID"]){
                 return;
             }
         }
         mysqli_free_result($result_ct);
         
-        $subject = $row_ce_req["subject"];
         $courseID = $row_ce_req["courseID"];
         
         if($studentID != 0){
-            $sql = "INSERT INTO courses_Needed (studentID, subject, courseID)
-                    VALUES ('$studentID', '$subject', '$courseID');";
+            $sql = "INSERT INTO courses_Needed (studentID, subject, courseID, year, term)
+                    SELECT '$studentID', CE_program.subject, CE_program.courseID, CE_program.year, CE_program.term
+                    FROM CE_program
+                    WHERE CE_program.courseID = '$courseID';";
+
+            /*$sql = "INSERT INTO courses_Needed (studentID, subject, courseID)
+                    VALUES ('$studentID', '$subject', '$courseID');";*/
             $connection->query($sql);
             echo mysqli_error($connection);
         }
     }
+    
+    
 ?>
