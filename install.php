@@ -9,6 +9,7 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
+    ParseCourses($DB);
     
     /*
      * Description: Initiate our database
@@ -98,4 +99,31 @@
         );";
         $DB->execute($sql);*/
     }
+
+	/**
+     * Description: Initiate our database
+     * param: an Empty Database instance blob
+     * return: a live instance of our DB for this site
+     **/
+    function ParseCourses($DB){
+        $i = 0;
+        $row=0;
+        echo getcwd();
+        if (($handle = fopen("../model/course_data.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                
+                $num = count($data);
+                echo "<p> $num fields in line $row: <br /></p>\n";
+                $row++;
+                for ($c=0; $c < $num; $c++) {
+                    echo $data[$c] . "<br />\n";
+                    //$sql = "INSERT into course(subject, courseID, sequence, catalog_title, instruction_type, days, startTime, endTime, room_cap) VALUES ('"+$data[0]+"
+                    //$DB->execute();
+                }
+            }
+        fclose($handle);
+        }
+    }
+
+
 ?>

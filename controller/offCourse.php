@@ -8,8 +8,7 @@ function printClasses(){
 
     $login = $_COOKIE['user'];
     $classesTaken = array();
-    echo $login;
-   /* $connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+    $connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
     foreach ($_POST['class'] as $taken) {
         array_push($classesTaken, $taken);	
     	$sql = "INSERT INTO courses_Taken (studentID, courseID) VALUES ('$login', '$taken');";
@@ -21,7 +20,7 @@ function printClasses(){
             echo "The record cannot be added ". mysqli_error($connection);
     }  
     }
-    print_r($classesTaken);*/
+    print_r($classesTaken);
 }
 
 
