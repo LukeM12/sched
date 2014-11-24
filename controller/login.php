@@ -12,7 +12,6 @@
     $studentID = $_POST['StudentNum']; 
     $password = $_POST['Password']; 
     Login($data,$studentID,$password );
-				//header('Refresh:1;url=/view/offCourse.html');
 
     /**
      * 
@@ -21,7 +20,6 @@
      * @param unknown $password - the user password
      */
    function Login($data,$studentID,$password ){
-		$login = $_POST['StudentNum'];
 		
 		// Minimum req to prevent php injection
 		/*$sql = sprintf(
@@ -42,17 +40,17 @@
 			$password = $_POST['Password'];
 			if($password == $db_password)
             {
-				setcookie("user", $login, time() + 3600, "/");
-                //This is where we bring the next page and
-					header('Refresh:1;url=/view/offCourse.html');
-                //show the user information about themself
-				//echo "Successfully logged in.";
+				setcookie("user", $studentID, time() + 3600, "/");
+                
+                if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F')
+                {
+                    header('Refresh:1;url=/view/offCourse.html');
+                }
 			}
 			else
             {
-			//header('Refresh:1;url=/');
 				echo "Password is incorrect. Please enter a valid password.";
-				
+                header('Refresh:1;url=/');
 			}
 		}
 		else

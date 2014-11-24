@@ -1,26 +1,31 @@
 <?php
-printClasses();
+populateCoursesTaken();
 /*
  * Description :Store the classes that the user specified that they took in the DB 
  * return: If the courses effectively got added the the uni db
  */
-function printClasses(){
+function populateCoursesTaken(){
 
     $login = $_COOKIE['user'];
     $classesTaken = array();
     $connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+    
     foreach ($_POST['class'] as $taken) {
-        array_push($classesTaken, $taken);	
-    	$sql = "INSERT INTO courses_Taken (studentID, courseID) VALUES ('$login', '$taken');";
-        if($connection->query($sql)){
-                echo "The record is added";
-            }
-        else
-        {
+        array_push($classesTaken, $taken);
+        $course_taken = explode("-",$taken);
+        $subject = $course_taken[0];
+        $courseID = $course_taken[1];
+    	$sql = "INSERT INTO courses_Taken (studentID, subject, courseID) VALUES ('$login', '$subject', '$courseID');";
+        $connection->query($sql);
+        /*if($connection->query($sql)){
+            echo "The record is added";
+        }
+        else{
             echo "The record cannot be added ". mysqli_error($connection);
-    }  
+        }*/
     }
-    print_r($classesTaken);
+    //print_r($classesTaken);
+    header('Refresh:1;url=/controller/viewPrintCourses.php');
 }
 
 

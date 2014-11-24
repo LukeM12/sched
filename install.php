@@ -5,11 +5,14 @@
      -->
 <?php
 	require_once("model/db.php"); //php file which will contain the database class
+    require_once("model/load_data.php");
 	
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
-    ParseCourses($DB);
+    //ParseCourses($DB);
+    loadCSVfiles($DB);
+    testInitTables($DB);
     
     /*
      * Description: Initiate our database
@@ -48,9 +51,9 @@
         $sql = "CREATE TABLE IF NOT EXISTS student(
                     studentID int NOT NULL,
                     name varchar(255),
-                    onCourse text,
                     password varchar(255),
-                    coursesTaken varchar(255),
+                    newUser varchar(1),
+                    onCourse varchar(1),
                     PRIMARY KEY(studentID)
              );";
         $DB->execute($sql);
