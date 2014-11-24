@@ -32,7 +32,7 @@ function printCoursesNeeded(){
     */
     function populateCoursesNeeded($connection, $studentID) {
     
-        $sql = "SELECT * FROM CE_program;";
+        $sql = "SELECT * FROM ce_program;";
         $result_ce_req = $connection->query($sql);
         while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
             $sql = "SELECT * FROM courses_Taken WHERE studentID='$studentID';";
@@ -64,9 +64,9 @@ function printCoursesNeeded(){
         
         if($studentID != 0){
             $sql = "INSERT INTO courses_Needed (studentID, subject, courseID, year, term)
-                    SELECT '$studentID', CE_program.subject, CE_program.courseID, CE_program.year, CE_program.term
-                    FROM CE_program
-                    WHERE CE_program.courseID = '$courseID';";
+                    SELECT '$studentID', ce_program.subject, ce_program.courseID, ce_program.year, ce_program.term
+                    FROM ce_program
+                    WHERE ce_program.courseID = '$courseID';";
 
             /*$sql = "INSERT INTO courses_Needed (studentID, subject, courseID)
                     VALUES ('$studentID', '$subject', '$courseID');";*/

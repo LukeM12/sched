@@ -82,7 +82,7 @@
         //Make a communication engineering required courses table
         //Table contains the courses required by the communication engineering
         //Table is coupled with course table
-        $sql = "CREATE TABLE IF NOT EXISTS CE_program(
+        $sql = "CREATE TABLE IF NOT EXISTS ce_program(
                     year int NOT NULL,
                     subject varchar(4) NOT NULL,
                     courseID varchar(255) NOT NULL,
@@ -93,7 +93,7 @@
         echo $DB->getError();
         //Had an issue when populating the database when it had the foreign key
         
-        /*$sql = "CREATE TABLE IF NOT EXISTS CE_program(
+        /*$sql = "CREATE TABLE IF NOT EXISTS ce_program(
                     year int NOT NULL,
                     courseID varchar(255) NOT NULL,
                     term char NOT NULL,
