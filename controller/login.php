@@ -45,12 +45,14 @@
                 if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F')
                 {
                     header('Refresh:1;url=/view/offCourse.html');
+                    exit;
                 }
 			}
 			else
             {
 				echo "Password is incorrect. Please enter a valid password.";
                 header('Refresh:1;url=/');
+                exit;
 			}
 		}
 		else
