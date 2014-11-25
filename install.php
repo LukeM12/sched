@@ -2,8 +2,11 @@
               Matt 
               Volod 
      Email : lukemorrison@carleton.cmail.ca
+     Description : A single script to create and populate our database 
      -->
 <?php
+
+    
 	require_once("model/db.php"); //php file which will contain the database class
     require_once("model/load_data.php");
 	
@@ -12,10 +15,10 @@
     initTables($DB);
     ParseCEProgram($DB);
     ParseCourses($DB);
-//    loadCSVfiles($DB);
-  
-    testInitTables($DB);
-    
+    testIanitTables($DB);
+
+
+   /**************************************** Database Configuration and Creation ************************************/ 
     /*
      * Description: Initiate our database
      * param: an Empty Database instance blob
@@ -94,44 +97,31 @@
         $DB->execute($sql);
         echo $DB->getError();
     }
-	/**
+   /**************************************** Course and Program Data Parsing  ************************************/ 
+	/** NOTE -INFILE did not work for everyone (different MYSQL version?) So I hard-coded a workaround
      * Description: Parse the Courses Data File
-     * param : Live database
-     * return: the database inti
+     * param : Live database instance 
+     * return: the ce_program table is then initialized
      **/
     function ParseCEProgram($DB){
-        $i = 0;
-        $row=0;
-        echo getcwd();
         if (($handle = fopen("../model/ce_program.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-                $num = count($data);
-                echo "<p> $num fields in line $row: <br /></p>\n";
-                $row++;
                 $sql = "INSERT into ce_program(year, subject, courseID, term) VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."');";
-        //        echo "'".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."'";    
                 $DB->execute($sql);
             }
         fclose($handle);
         }
     }
-	/**
-     * Description: Initiate our database
-     * param: an Empty Database instance blob
-     * return: a live instance of our DB for this site
+	/** NOTE -INFILE did not work for everyone (different MYSQL version?) So I hard-coded a workaround
+     * Description: Parse all the courses in the csv file 
+     * param: a initialized database instance
+     * return: mysql course table is then populated
      **/
     function ParseCourses($DB){
-        $i = 0;
-        $row=0;
-        echo getcwd();
         if (($handle = fopen("../model/course_data.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-                $num = count($data);
-                echo "<p> $num fields in line $row: <br /></p>\n";
-                $row++;
                 $sql = "INSERT into course(subject, courseID, sequence, catalog_title, instruction_type, days, startTime, endTime, room_cap) VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."','".$data[4]."','".$data[5]."','".$data[6]."','".$data[7]."','".$data[8]."');";
                 $DB->execute($sql);
-                //}
             }
         fclose($handle);
         }
