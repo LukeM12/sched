@@ -2,30 +2,31 @@
     //To load the script run "http://localhost/model/load_data.php"
 
     function loadCSVfiles($DB) {
-        $enclosed =  '"';
-        
-        $sql = "LOAD DATA LOCAL INFILE '../model/course_data.csv'
-                INTO TABLE course
-                FIELDS 
-                    TERMINATED BY ';'
-                    ENCLOSED BY '".$enclosed."'
-                LINES 
-                    TERMINATED BY '\r\n'
-                IGNORE 1 LINES;";
+
+
+	    $sql=   'LOAD DATA LOCAL INFILE "/opt/lampp/htdocs/model/course_data.csv"                 
+		        INTO TABLE course 
+		        FIELDS 
+		        	TERMINATED BY ";" 
+		        	ENCLOSED BY "\""
+		        		LINES TERMINATED BY "\n" IGNORE 1 LINES';
                 
         $DB->execute($sql);
         echo $DB->getError();
         
-        $sql = "LOAD DATA LOCAL INFILE '../model/ce_program_course_data.csv'
+        $sql = 'LOAD DATA LOCAL INFILE "/opt/lampp/htdocs/model/ce_program_course_data.csv"
                 INTO TABLE ce_program
                 FIELDS 
-                    TERMINATED BY ';'
+                    TERMINATED BY ";"
                 LINES 
-                    TERMINATED BY '\r\n';";
+                	TERMINATED BY "\n";';
 
         $DB->execute($sql);
         echo $DB->getError();
     }
+
+    //mysql> LOAD DATA LOCAL INFILE '/opt/lampp/htdocs/model/course_data.csv'                 INTO TABLE course FIELDS TERMINATED BY ';' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
     //testInitTables($connection);
     //$studentID = 223;
     //populateCoursesNeeded($connection, $studentID);
