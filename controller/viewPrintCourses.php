@@ -27,23 +27,8 @@ function printCoursesNeeded(){
     mysqli_free_result($result);
 }
 
-/** 
-    * Populates courses_Needed table
-    */
-    function populateCoursesNeeded($connection, $studentID) {
-    
-        $sql = "SELECT * FROM ce_program;";
-        $result_ce_req = $connection->query($sql);
-        while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
-            $sql = "SELECT * FROM courses_Taken WHERE studentID='$studentID';";
-            $result_ct = $connection->query($sql);
-            checkIfCourseWasTaken($studentID, $row_ce_req, $result_ct, $connection);
-        }
-        mysqli_free_result($result_ce_req);
-    }
-    
     /**
-    * Inserts one row of courses_Needed
+    * Populates courses_Needed table
     *
     * Compares the courseID field from ce_program against each element in courses_Taken table. If
     * there was a hit return. If there wasnt a hit insert into courses_Needed table studentID value
@@ -51,32 +36,28 @@ function printCoursesNeeded(){
     * 
     * @todo: Check for duplicates before inserting into table 
     */
-    function checkIfCourseWasTaken($studentID, $row_ce_req, $result_ct, $connection) {
+    function populateCoursesNeeded($connection, $studentID) {
+    
+        $sql = "SELECT * FROM ce_program;";
+        $result_ce_req = $connection->query($sql);
         
-        while($row_ct = $result_ct->fetch_array(MYSQLI_ASSOC)){
-            if($row_ct["courseID"]==$row_ce_req["courseID"]){
-                return;
-            }
-        }
-        mysqli_free_result($result_ct);
-        
-        $courseID = $row_ce_req["courseID"];
-        
-        if($studentID != 0){
-            $sql = "INSERT INTO courses_Needed (studentID, subject, courseID, year, term)
+        while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
+            $format = "SELECT * FROM courses_Taken 
+                       WHERE studentID='%s' AND subject='%s' AND courseID='%s';";
+            $sql = sprintf($format,$studentID,$row_ce_req['subject'],$row_ce_req['courseID']);
+            $result_ct = $connection->query($sql);
+            echo mysqli_error($connection);
+            
+            $row_ct = $result_ct->num_rows;
+            if($row_ct == 0){
+                $sql = "INSERT INTO courses_Needed (studentID, subject, courseID, year, term)
                     SELECT '$studentID', ce_program.subject, ce_program.courseID, ce_program.year, ce_program.term
                     FROM ce_program
-                    WHERE ce_program.courseID = '$courseID';";
-
-            /*$sql = "INSERT INTO courses_Needed (studentID, subject, courseID)
-                    VALUES ('$studentID', '$subject', '$courseID');";*/
-            $connection->query($sql);
-            echo mysqli_error($connection);
+                    WHERE ce_program.subject = '".$row_ce_req["subject"]."' AND ce_program.courseID = '".$row_ce_req["courseID"]."';";
+                $connection->query($sql);
+                echo mysqli_error($connection);
+            }
         }
     }
-
-
-
-
 
 ?>
