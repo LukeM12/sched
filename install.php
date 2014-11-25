@@ -10,8 +10,10 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
-    //ParseCourses($DB);
-    loadCSVfiles($DB);
+    ParseCEProgram($DB);
+    ParseCourses($DB);
+//    loadCSVfiles($DB);
+  
     testInitTables($DB);
     
     /*
@@ -91,18 +93,27 @@
                 
         $DB->execute($sql);
         echo $DB->getError();
-        //Had an issue when populating the database when it had the foreign key
-        
-        /*$sql = "CREATE TABLE IF NOT EXISTS ce_program(
-                    year int NOT NULL,
-                    courseID varchar(255) NOT NULL,
-                    term char NOT NULL,
-                    UNIQUE (courseID),
-                    FOREIGN KEY (courseID) references course(courseID)
-        );";
-        $DB->execute($sql);*/
     }
-
+	/**
+     * Description: Parse the Courses Data File
+     * param : Live database
+     * return: the database inti
+     **/
+    function ParseCEProgram($DB){
+        $i = 0;
+        $row=0;
+        echo getcwd();
+        if (($handle = fopen("../model/course_data.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                $num = count($data);
+                echo "<p> $num fields in line $row: <br /></p>\n";
+                $row++;
+                $sql = "INSERT into ce_program(year, subject, courseID, term) VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."');";
+                $DB->execute($sql);
+            }
+        fclose($handle);
+        }
+    }
 	/**
      * Description: Initiate our database
      * param: an Empty Database instance blob
@@ -118,15 +129,16 @@
                 $num = count($data);
                 echo "<p> $num fields in line $row: <br /></p>\n";
                 $row++;
-                for ($c=0; $c < $num; $c++) {
-                    echo $data[$c] . "<br />\n";
-                    //$sql = "INSERT into course(subject, courseID, sequence, catalog_title, instruction_type, days, startTime, endTime, room_cap) VALUES ('"+$data[0]+"
-                    //$DB->execute();
-                }
+                //for ($c=0; $c < $num; $c++) {
+                  //  echo $data[$c] . "<br />\n";
+                    $sql = "INSERT into course(subject, courseID, sequence, catalog_title, instruction_type, days, startTime, endTime, room_cap) VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."','".$data[4]."','".$data[5]."','".$data[6]."','".$data[7]."','".$data[8]."');";
+                    $DB->execute($sql);
+                //}
             }
         fclose($handle);
         }
     }
+
 
 
 ?>
