@@ -103,12 +103,13 @@
         $i = 0;
         $row=0;
         echo getcwd();
-        if (($handle = fopen("../model/course_data.csv", "r")) !== FALSE) {
+        if (($handle = fopen("../model/ce_program.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 $num = count($data);
                 echo "<p> $num fields in line $row: <br /></p>\n";
                 $row++;
                 $sql = "INSERT into ce_program(year, subject, courseID, term) VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."');";
+        //        echo "'".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."'";    
                 $DB->execute($sql);
             }
         fclose($handle);
@@ -125,14 +126,11 @@
         echo getcwd();
         if (($handle = fopen("../model/course_data.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-                
                 $num = count($data);
                 echo "<p> $num fields in line $row: <br /></p>\n";
                 $row++;
-                //for ($c=0; $c < $num; $c++) {
-                  //  echo $data[$c] . "<br />\n";
-                    $sql = "INSERT into course(subject, courseID, sequence, catalog_title, instruction_type, days, startTime, endTime, room_cap) VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."','".$data[4]."','".$data[5]."','".$data[6]."','".$data[7]."','".$data[8]."');";
-                    $DB->execute($sql);
+                $sql = "INSERT into course(subject, courseID, sequence, catalog_title, instruction_type, days, startTime, endTime, room_cap) VALUES ('".$data[0]."','".$data[1]."','".$data[2]."','".$data[3]."','".$data[4]."','".$data[5]."','".$data[6]."','".$data[7]."','".$data[8]."');";
+                $DB->execute($sql);
                 //}
             }
         fclose($handle);
