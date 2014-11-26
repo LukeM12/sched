@@ -11,8 +11,8 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
-    //ParseCEProgram($DB);
-    //ParseCourses($DB);
+    ParseCEProgram($DB);
+    ParseCourses($DB);
     ParsePrerequisites($DB);
     testInitTables($DB);
     
@@ -155,24 +155,139 @@
             fclose($handle);
         }
     }
+    /** 
+     * Description: Parse all the prerequisites in the csv file 
+     * param: a initialized database instance
+     * return: mysql prerequisite table is then populated
+     **/
     function ParsePrerequisites($DB){
-        if (($handle = fopen("model/prereq.csv", "r")) !== FALSE) {
+        if (($handle = fopen("../model/prereq.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 $data[1] = strtoupper($data[1]);
                 $sql = "INSERT into course_prereq(courseName) VALUES ('".$data[0]."');";
                 $DB->execute($sql);
-                echo $DB->getError();
+                
+                //Setting permission requirement
                 if(strstr($data[1], 'PERMISSION OF THE DEPARTMENT') !== FALSE) {
-                    //$hit++;
-                    //echo $data[0]."<br/>";
+                    $sql = "UPDATE course_prereq SET departmentPerReq = 'T'
+                            WHERE courseName='".$data[0]."';";
+                    $data[1] = strstr($data[1], 'PERMISSION OF THE DEPARTMENT', true);
                 }
                 else {
+                    $sql = "UPDATE course_prereq SET departmentPerReq = 'F'
+                            WHERE courseName='".$data[0]."';";
                 }
+                $DB->execute($sql);
+                
+                //Setting program prerequisite
+                if(strstr($data[1], 'ENGINEERING') !== FALSE) {
+                    $stringToAppend = '';
+                    if(strstr($data[1], 'BIOMEDICAL AND MECHANICAL ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('BIOMEDICAL AND MECHANICAL ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'BME ';
+                    }
+                    if(strstr($data[1], 'BIOMEDICAL AND ELECTRICAL ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('BIOMEDICAL AND ELECTRICAL ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'BEE ';
+                    }
+                    if(strstr($data[1], 'ELECTRICAL ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('ELECTRICAL ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'EE ';
+                    }
+                    if(strstr($data[1], 'SOFTWARE ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('SOFTWARE ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'SE ';
+                    }
+                    if(strstr($data[1], 'COMPUTER SYSTEMS ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('COMPUTER SYSTEMS ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'CSE ';
+                    }
+                    if(strstr($data[1], 'COMMUNICATIONS ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('COMMUNICATIONS ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'CE ';
+                    }
+                    if(strstr($data[1], 'SUSTAINABLE AND RENEWABLE ENERGY ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('SUSTAINABLE AND RENEWABLE ENERGY ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'SREE ';
+                    }
+                    if(strstr($data[1], 'ENGINEERING PHYSICS') !== FALSE){
+                        $data[1] = str_replace('ENGINEERING PHYSICS','',$data[1]);
+                        $stringToAppend .= 'EP ';
+                    }
+                    if(strstr($data[1], 'ENGINEERING') !== FALSE){
+                        $data[1] = str_replace('ENGINEERING','',$data[1]);
+                        $stringToAppend .= 'E ';
+                    }
+                    $sql = "UPDATE course_prereq SET programReq = '".$stringToAppend."'
+                            WHERE courseName='".$data[0]."';";
+                }
+                else {
+                    $sql = "UPDATE course_prereq SET programReq = '".$stringToAppend."'
+                            WHERE courseName='".$data[0]."';";
+                }
+                $DB->execute($sql);
+                
+                //Setting year prerequisite
+                $year = 0;
+                if(strstr($data[1], 'YEAR') !== FALSE) {
+                    if(strstr($data[1], 'FOURTH-YEAR STATUS IN') !== FALSE){
+                        $data[1] = str_replace('FOURTH-YEAR STATUS IN','',$data[1]);
+                        $year = 4;
+                    }
+                    if(strstr($data[1], 'THIRD-YEAR STATUS IN') !== FALSE){
+                        $data[1] = str_replace('THIRD-YEAR STATUS IN','',$data[1]);
+                        $year = 3;
+                    }
+                }
+                $sql = "UPDATE course_prereq SET yearReq = ".$year."
+                        WHERE courseName='".$data[0]."';";
+                $DB->execute($sql);
+                
+                //Clean up
+                $tempStr = strstr($data[1], 'ONAL');
+                if($tempStr !== FALSE) {
+                    $data[1] = str_replace($tempStr,'',$data[1]);
+                }
+                $data[1] = str_replace('(','',$data[1]);
+                $data[1] = str_replace(')','',$data[1]);
+                $data[1] = str_replace(',','',$data[1]);
+                $data[1] = str_replace('ENROLMENT IN THE','',$data[1]);
+                $data[1] = str_replace('PROGRAM','',$data[1]);
+                $data[1] = str_replace('DESIGN','',$data[1]);
+                
+                //Finding concurrent requirement
+                $course = '';
+                while(strpos($data[1],'MAY BE TAKEN CONCURRENTLY') !== FALSE){
+                    $tempStr = strstr($data[1],'MAY BE TAKEN CONCURRENTLY', true);
+                    $course .= substr($tempStr,-10,9).",";
+                    
+                    $pos = strpos($data[1],'MAY BE TAKEN CONCURRENTLY');
+                    $data[1] = substr_replace($data[1],'',$pos,strlen('MAY BE TAKEN CONCURRENTLY'));
+                }
+                $sql = "UPDATE course_prereq SET concurrent = '".$course."'
+                        WHERE courseName='".$data[0]."';";
+                $DB->execute($sql);
+                
+                //Finally parse the courses
+                $preReqCourse = explode("AND",$data[1]);
+                for($i = 0; $i < sizeof($preReqCourse); $i++){
+                    if($i == 0){
+                        $sql = "UPDATE course_prereq SET firstPreReq = '".$preReqCourse[0]."'
+                        WHERE courseName='".$data[0]."';";
+                    }
+                    if($i == 1){
+                        $sql = "UPDATE course_prereq SET firstPreReq = '".$preReqCourse[0]."', secondPreReq = '".$preReqCourse[1]."'
+                        WHERE courseName='".$data[0]."';";
+                    }
+                    if($i == 2){
+                        $sql = "UPDATE course_prereq SET firstPreReq = '".$preReqCourse[0]."', secondPreReq = '".$preReqCourse[1]."', thirdPreReq = '".$preReqCourse[2]."'
+                        WHERE courseName='".$data[0]."';";
+                    }
+                }
+                $DB->execute($sql);
             }
             fclose($handle);
         }
-        //echo $row." HOW MANY ROWS <br/>";
-        //echo $hit." HOW MANY HITS <br/>";
     }
 
 
