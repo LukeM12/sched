@@ -11,8 +11,9 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
-    ParseCEProgram($DB);
-    ParseCourses($DB);
+    //ParseCEProgram($DB);
+    //ParseCourses($DB);
+    loadCSVfiles($DB);
     ParsePrerequisites($DB);
     testInitTables($DB);
     
@@ -86,8 +87,8 @@
         //Table contains the courses required by the communication engineering
         //Table is coupled with course table
         $sql = "CREATE TABLE IF NOT EXISTS ce_program(
-                    courseName varchar(255) NOT NULL,
                     year int NOT NULL,
+                    courseName varchar(255) NOT NULL,
                     term char NOT NULL);";
                 
         $DB->execute($sql);
@@ -219,7 +220,7 @@
                             WHERE courseName='".$data[0]."';";
                 }
                 else {
-                    $sql = "UPDATE course_prereq SET programReq = '".$stringToAppend."'
+                    $sql = "UPDATE course_prereq SET programReq = 'E'
                             WHERE courseName='".$data[0]."';";
                 }
                 $DB->execute($sql);
@@ -267,6 +268,21 @@
                 
                 //Finally parse the courses
                 $preReqCourse = explode("AND",$data[1]);
+                $arrayOfPreReq = ['firstPreReq','secondPreReq','thirdPreReq'];
+                $arrayOfSubject = ["ECOR","ELEC","SYSC","COMP","MATH","STAT","PHYS"];
+                //Clean up blocks that dont contain courses
+                for($i = 0; $i < sizeof($preReqCourse); $i++){
+                    $hit = 0;
+                    foreach ($arrayOfSubject as $subject) {
+                        if(strpos($preReqCourse[$i],$subject) !== FALSE){
+                            $hit++;
+                        }
+                    }
+                    if($hit==0){
+                        $preReqCourse[$i] = '';
+                    }
+                }
+                $emptyRemoved = array_filter($preReqCourse);
                 for($i = 0; $i < sizeof($preReqCourse); $i++){
                     if($i == 0){
                         $sql = "UPDATE course_prereq SET firstPreReq = '".$preReqCourse[0]."'

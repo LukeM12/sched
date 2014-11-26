@@ -2,8 +2,11 @@
     //To load the script run "http://localhost/model/load_data.php"
 
     function loadCSVfiles($DB) {
-
-
+        /**
+        * Uncomment this section to parse the files on Linux box and comment out the 
+        * Windows section
+        */
+        /*
 	    $sql=   'LOAD DATA LOCAL INFILE "/opt/lampp/htdocs/model/course_data.csv"                 
 		        INTO TABLE course 
 		        FIELDS 
@@ -21,6 +24,33 @@
                 LINES 
                 	TERMINATED BY "\n";';
 
+        $DB->execute($sql);
+        echo $DB->getError();
+        */
+        
+        /**
+        * Uncomment this section to parse the files on Windows box and comment out the 
+        * Linux section
+        */
+        $enclosed =  '"';
+        $sql = "LOAD DATA LOCAL INFILE '../model/course_data.csv'
+                INTO TABLE course
+                FIELDS 
+                    TERMINATED BY ';'
+                    ENCLOSED BY '".$enclosed."'
+                LINES 
+                    TERMINATED BY '\r\n'
+                IGNORE 1 LINES;";
+                
+        $DB->execute($sql);
+        echo $DB->getError();
+        
+        $sql = "LOAD DATA LOCAL INFILE '../model/ce_program.csv'
+                INTO TABLE ce_program
+                FIELDS 
+                    TERMINATED BY ';'
+                LINES 
+                    TERMINATED BY '\r\n';";
         $DB->execute($sql);
         echo $DB->getError();
     }
