@@ -12,10 +12,7 @@ function populateCoursesTaken(){
     
     foreach ($_POST['class'] as $taken) {
         array_push($classesTaken, $taken);
-        $course_taken = explode("-",$taken);
-        $subject = $course_taken[0];
-        $courseID = $course_taken[1];
-    	$sql = "INSERT INTO courses_Taken (studentID, subject, courseID) VALUES ('$login', '$subject', '$courseID');";
+    	$sql = "INSERT INTO courses_Taken (studentID, courseName) VALUES ('$login', '$taken');";
         $connection->query($sql);
         /*if($connection->query($sql)){
             echo "The record is added";

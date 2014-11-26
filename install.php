@@ -66,8 +66,7 @@
         //This table is actually coupled between student and course, and there will be copies of both the student and the course but not combined
         $sql = "CREATE TABLE IF NOT EXISTS courses_Taken(
                     studentID int NOT NULL,
-                    subject varchar(4) NOT NULL,
-                    courseID varchar(255) NOT NULL);";
+                    courseName varchar(255) NOT NULL);";
 
         $DB->execute($sql);
         echo $DB->getError();
@@ -76,8 +75,7 @@
         //the courses the student needs to take
         $sql = "CREATE TABLE IF NOT EXISTS courses_Needed(
                     studentID int NOT NULL,
-                    subject varchar(4) NOT NULL,
-                    courseID varchar(255) NOT NULL,
+                    courseName varchar(255) NOT NULL,
                     year int NOT NULL,
                     term char NOT NULL,
                     entry int);";
@@ -88,9 +86,8 @@
         //Table contains the courses required by the communication engineering
         //Table is coupled with course table
         $sql = "CREATE TABLE IF NOT EXISTS ce_program(
+                    courseName varchar(255) NOT NULL,
                     year int NOT NULL,
-                    subject varchar(4) NOT NULL,
-                    courseID varchar(255) NOT NULL,
                     term char NOT NULL);";
                 
         $DB->execute($sql);
@@ -124,9 +121,9 @@
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 $num = count($data);
                 $row++;
-                $format = 'INSERT into ce_program(year, subject, courseID, term) 
-                        VALUES ("%s", "%s", "%s", "%s");';
-                $sql = sprintf($format, $data[0], $data[1], $data[2], $data[3]);
+                $format = 'INSERT into ce_program(year, courseName, term) 
+                        VALUES ("%s", "%s", "%s");';
+                $sql = sprintf($format, $data[0], $data[1], $data[2]);
                 
                 $DB->execute($sql);
                 echo $DB->getError();
