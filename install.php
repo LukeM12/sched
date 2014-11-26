@@ -11,8 +11,9 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
-    ParseCEProgram($DB);
-    ParseCourses($DB);
+    //ParseCEProgram($DB);
+    //ParseCourses($DB);
+    ParsePrerequisites($DB);
     testInitTables($DB);
     
     
@@ -94,6 +95,19 @@
                 
         $DB->execute($sql);
         echo $DB->getError();
+        //Make a course prerequisite table
+        $sql = "CREATE TABLE IF NOT EXISTS course_prereq(
+                    courseName varchar(255) NOT NULL,
+                    yearReq int NOT NULL,
+                    programReq varchar(255) NOT NULL,
+                    departmentPerReq char NOT NULL,
+                    concurrent varchar(255) NOT NULL,
+                    firstPreReq varchar(255) NOT NULL,
+                    secondPreReq varchar(255) NOT NULL,
+                    thirdPreReq varchar(255) NOT NULL,
+                    PRIMARY KEY (courseName));";
+        $DB->execute($sql);
+        echo $DB->getError();
     }
     /**************************************** Course and Program Data Parsing  ************************************/ 
 	/** NOTE -INFILE did not work for everyone (different MYSQL version?) So I hard-coded a workaround
@@ -138,8 +152,27 @@
                 $sql = sprintf($format,$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], $data[7], $data[8]);
                 $DB->execute($sql);
             }
-        fclose($handle);
+            fclose($handle);
         }
+    }
+    function ParsePrerequisites($DB){
+        if (($handle = fopen("model/prereq.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+                $data[1] = strtoupper($data[1]);
+                $sql = "INSERT into course_prereq(courseName) VALUES ('".$data[0]."');";
+                $DB->execute($sql);
+                echo $DB->getError();
+                if(strstr($data[1], 'PERMISSION OF THE DEPARTMENT') !== FALSE) {
+                    //$hit++;
+                    //echo $data[0]."<br/>";
+                }
+                else {
+                }
+            }
+            fclose($handle);
+        }
+        //echo $row." HOW MANY ROWS <br/>";
+        //echo $hit." HOW MANY HITS <br/>";
     }
 
 
