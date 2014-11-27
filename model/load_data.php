@@ -77,8 +77,8 @@
         $DB->execute($sql);
         echo $DB->getError();
         
-        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse) 
-                values ('222', 'Mike', '111', 'T', 'T');";
+        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse, year) 
+                values ('222', 'Mike', '111', 'T', 'T', '3');";
         //$connection->query($sql);
         //echo mysqli_error($connection);
         $DB->execute($sql);
