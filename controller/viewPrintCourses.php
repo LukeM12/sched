@@ -4,6 +4,7 @@ $connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
 printCoursesNeeded($connection);
 /*
  * Description :Store the classes that the user specified that they took in the DB 
+ *@param : connection, a current connection to the database 
  * return: If the courses effectively got added the the uni db
  */
 function printCoursesNeeded($connection){
@@ -13,6 +14,8 @@ function printCoursesNeeded($connection){
     $sql = "SELECT * FROM student WHERE studentID='$login';";
     $result = $connection->query($sql);
     $user_data = $result->fetch_assoc();
+
+    //We need to populate the courses that the user is required to take 
     if ($user_data['newUser'] == 'T') {
         populateCoursesNeeded($connection, $login);
     }
@@ -40,7 +43,7 @@ function printCoursesNeeded($connection){
     
         $sql = "SELECT * FROM ce_program;";
         $result_ce_req = $connection->query($sql);
-        
+        //Iterate each entry from ce_program and test them against the courses the user has taken
         while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
             $format = "SELECT * FROM courses_Taken 
                        WHERE studentID='%s' AND courseName='%s';";
@@ -60,16 +63,17 @@ function printCoursesNeeded($connection){
         }
     }
 
-	function coursesEligible($connection, $userData){
-		//For every class inside courses_needed look at that entry
-		//in course_prereq, get the prereq and check if that class
-		//is inside courses_taken. If it is, put a flag on the class
-		//in courses_needed that it CAN be taken
+    /*
+     *Description: coursesEligable takens the user ID, and the connection and 
+     *
+     */
+    function coursesEligible($connection, $userData){
         echo $userData['studentID']." is eligible to take:<br/>";
 		$sql = "SELECT * FROM courses_Needed WHERE studentID = '".$userData['studentID']."';";
-		$result_needed = $connection->query($sql);
-		while($row_courses_needed = $result_needed->fetch_array(MYSQLI_ASSOC)){
+		$courses_needed = $connection->query($sql);
+		while($row_courses_needed = $courses_needed->fetch_array(MYSQLI_ASSOC)){
             //Check if the class is in prereq table. If its not then student is eligible to take it.
+            //row  course Needed is a row of the course that the user needs objectively.
             $sql = "SELECT * FROM course_prereq WHERE courseName = '".$row_courses_needed['courseName']."';";
             $prereq = $connection->query($sql);
             $row_prereq = $prereq->fetch_assoc();

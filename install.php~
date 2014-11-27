@@ -17,7 +17,7 @@
     	echo "Table does not exist";
 	}
 	else {
-		echo "Table exists";
+		echo "Table existsexist";
 	}
     
 
