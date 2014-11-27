@@ -60,6 +60,7 @@
                     password varchar(255),
                     newUser varchar(1),
                     onCourse varchar(1),
+					year char NOT NULL,
                     PRIMARY KEY(studentID)
              );";
         $DB->execute($sql);
@@ -79,6 +80,8 @@
                     courseName varchar(255) NOT NULL,
                     year int NOT NULL,
                     term char NOT NULL,
+					eligible char NOT NULL,
+					registered char NOT NULL,
                     entry int);";
             
         $DB->execute($sql);

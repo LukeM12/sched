@@ -1,6 +1,7 @@
 <?php
 
 printCoursesNeeded();
+coursesEligible();
 /*
  * Description :Store the classes that the user specified that they took in the DB 
  * return: If the courses effectively got added the the uni db
@@ -60,4 +61,54 @@ function printCoursesNeeded(){
         }
     }
 
+	function coursesEligible(){
+		//For every class inside courses_needed look at that entry
+		//in course_prereq, get the prereq and check if that class
+		//is inside courses_taken. If it is, put a flag on the class
+		//in courses_needed that it CAN be taken
+		
+		
+		
+		$connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+		
+		$sql = "SELECT * FROM courses_Needed;";
+		$result_needed = $connection->query($sql);
+		$row_courses_needed = $result_needed->fetch_assoc();
+		//echo mysqli_error($connection);
+		
+		
+		$sql = "SELECT * FROM course_prereq WHERE courseName = '".$row_courses_needed['courseName']."';";
+		echo $sql."<br/>";
+		/*
+		$prereq = $connection->query($sql);
+		echo mysqli_error($connection);
+		$row_prereq_needed = $prereq->fetch_assoc();
+		
+		
+		$prereqList = array();
+		while($row_course_prereq = mysql_fetch_assoc($sql))
+		$prereqList[] = $row_course_prereq;
+		
+		foreach($prereqList as $prq){
+			$class1 = explode("or", $prq[firstPreReq]);
+		
+			$var = mysql_query("SELECT courseName FROM courses_taken WHERE courseName = '$class1[0]' OR  courseName = '$class1[1]';");
+			if(mysql_num_rows($var) == 1){
+				$sql =	"UPDATE courses_Needed SET eligible='Y' WHERE courseName='$result_needed';";
+				$fuck = $connection->query($sql);
+			}
+		
+		$class2 = explode("or", $prq[secondPreReq]);
+		$class3 = explode("or", $prq[thirdPreReq]); 
+		
+		}*/
+		
+		
+		
+		
+	}
+	
+	
+	
+	
 ?>
