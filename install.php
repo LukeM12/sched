@@ -11,8 +11,6 @@
     $DB = new database(""); //This name has to be changed to the name of our database
     $DB = InitDB($DB);
     initTables($DB);
-    //ParseCEProgram($DB);
-    //ParseCourses($DB);
     loadCSVfiles($DB);
     ParsePrerequisites($DB);
     testInitTables($DB);
@@ -111,52 +109,7 @@
         $DB->execute($sql);
         echo $DB->getError();
     }
-    /**************************************** Course and Program Data Parsing  ************************************/ 
-	/** NOTE -INFILE did not work for everyone (different MYSQL version?) So I hard-coded a workaround
-	/**
-     * Description: Parse the Courses Data File
-     * param : Live database instance 
-     * return: the ce_program table is then initialized
-     **/
-    function ParseCEProgram($DB){
-        $i = 0;
-        $row=0;
-        //echo getcwd();
-        if (($handle = fopen("../model/ce_program.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-                $num = count($data);
-                $row++;
-                $format = 'INSERT into ce_program(year, courseName, term) 
-                        VALUES ("%s", "%s", "%s");';
-                $sql = sprintf($format, $data[0], $data[1], $data[2]);
-                
-                $DB->execute($sql);
-                echo $DB->getError();
-            }
-        fclose($handle);
-        }
-    }
-	/** NOTE -INFILE did not work for everyone (different MYSQL version?) So I hard-coded a workaround
-     * Description: Parse all the courses in the csv file 
-     * param: a initialized database instance
-     * return: mysql course table is then populated
-     **/
-    function ParseCourses($DB){
-        $i = 0;
-        $row=0;
 
-        if (($handle = fopen("../model/course_data.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-                $num = count($data);
-                $row++;
-                $format = 'INSERT into course(subject, courseID, sequence, catalog_title, instruction_type, days, startTime, endTime, room_cap) 
-                           VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s");';
-                $sql = sprintf($format,$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], $data[7], $data[8]);
-                $DB->execute($sql);
-            }
-            fclose($handle);
-        }
-    }
     /** 
      * Description: Parse all the prerequisites in the csv file 
      * param: a initialized database instance
@@ -285,10 +238,13 @@
                 for($i = 0; $i < sizeof($preReqCourse); $i++){
                     if($i == 0){
                         $firstPreReq = $preReqCourse[0];
+                        $secondPreReq = '';
+                        $thirdPreReq = '';
                     }
                     if($i == 1){
                         $firstPreReq = $preReqCourse[0]; 
                         $secondPreReq = $preReqCourse[1];
+                        $thirdPreReq = '';
                     }
                     if($i == 2){
                         $firstPreReq = $preReqCourse[0]; 
