@@ -3,8 +3,10 @@
 
     function loadCSVfiles($DB) {
         $dir = getcwd();
-        
+		echo "this is the current direc=".$dir;
         $pieces = explode("/", $dir);
+        echo ' this is what hit is';
+
         $size_path = sizeof($pieces);
         $OS = '';
 
@@ -16,7 +18,7 @@
 		else {
 			$OS = $OS.'LINUX';
 		}
-        
+		        echo $pieces[0];
         $final_path = '';
 		$ce_program = ''; //this array later on
 		$courses = '';
@@ -33,7 +35,7 @@
 			}
 			$final_path = $final_path.'/';
             $courses= $final_path.'model/course_data.csv';
-            $ce_program = $final_path.'model/ce_program.csv';
+            $ce_program = $final_path.'model/ce_program_course_data.csv';
 		}
 		//Data filepath reconstruction on Linux Operating Systems
 		if ( strcmp($OS, "WINDOWS") == 0 ){  	
@@ -49,7 +51,7 @@
 			}
 			$final_path = $final_path.'/';
 			$courses= $final_path.'model/course_data.csv';
-            $ce_program = $final_path.'model/ce_program_c.csv';
+            $ce_program = $final_path.'model/ce_program_course_data.csv';
 		}
 
         $enclosed =  '"';
@@ -64,12 +66,18 @@
         $DB->execute($sql);
         echo $DB->getError();
         $enclosed =  '"';
-	    $sql=   'LOAD DATA LOCAL INFILE "'.$ce_program.'"                 
+	    $sql=   'LOAD DATA LOCAL INFILE "'.$courses.'"                 
 		        INTO TABLE ce_program
 		        FIELDS 
 		        	TERMINATED BY ";" 
 		        		LINES TERMINATED BY "\n" IGNORE 1 LINES';
 
+	   // $sql=   'LOAD DATA LOCAL INFILE "'.$ce_program.'"                 
+             //   INTO TABLE ce_program
+               // FIELDS 
+                 //   TERMINATED BY ";"
+               // LINES 
+                //	TERMINATED BY "\n";';
        $DB->execute($sql);
         echo $DB->getError();
     }
