@@ -1,30 +1,29 @@
 <?php
 
-printCoursesNeeded();
-coursesEligible();
+$connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+printCoursesNeeded($connection);
 /*
  * Description :Store the classes that the user specified that they took in the DB 
  * return: If the courses effectively got added the the uni db
  */
-function printCoursesNeeded(){
+function printCoursesNeeded($connection){
 
     $login = $_COOKIE['user'];
     $classesTaken = array();
-    $connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
     $sql = "SELECT * FROM student WHERE studentID='$login';";
     $result = $connection->query($sql);
     $user_data = $result->fetch_assoc();
     if ($user_data['newUser'] == 'T') {
-        mysqli_free_result($result);
         populateCoursesNeeded($connection, $login);
     }
-    echo "The courses that ".$login." needs to take are: <br />\n";
+    coursesEligible($connection, $user_data);
+    /*echo "The courses that ".$login." needs to take are: <br />\n";
     echo "year   term   courseName <br />\n";
     $sql = "SELECT * FROM courses_Needed WHERE studentID='$login';";
     $result = $connection->query($sql);
     while ($rows = $result->fetch_array(MYSQLI_ASSOC)){
         echo $rows['year']."    ".$rows['term']."    ".$rows['courseName']." <br />\n";
-    }
+    }*/
     mysqli_free_result($result);
 }
 
@@ -61,47 +60,101 @@ function printCoursesNeeded(){
         }
     }
 
-	function coursesEligible(){
+	function coursesEligible($connection, $userData){
 		//For every class inside courses_needed look at that entry
 		//in course_prereq, get the prereq and check if that class
 		//is inside courses_taken. If it is, put a flag on the class
 		//in courses_needed that it CAN be taken
-		
-		
-		
-		$connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
-		
-		$sql = "SELECT * FROM courses_Needed;";
+        echo $userData['studentID']." is eligible to take:<br/>";
+		$sql = "SELECT * FROM courses_Needed WHERE studentID = '".$userData['studentID']."';";
 		$result_needed = $connection->query($sql);
-		$row_courses_needed = $result_needed->fetch_assoc();
-		//echo mysqli_error($connection);
+		while($row_courses_needed = $result_needed->fetch_array(MYSQLI_ASSOC)){
+            //Check if the class is in prereq table. If its not then student is eligible to take it.
+            $sql = "SELECT * FROM course_prereq WHERE courseName = '".$row_courses_needed['courseName']."';";
+            $prereq = $connection->query($sql);
+            $row_prereq = $prereq->fetch_assoc();
+            if($prereq->num_rows == 0){
+                $eligible = 'Y';
+            }
+            else{
+                $eligible = 'Y';
+                //Check year
+                if ($userData['year']<$row_prereq['yearReq']){
+                    $eligible = 'N';
+                }
+                
+                //Check program req
+                if (strpos($row_prereq['programReq'],'ENG') !== FALSE){
+                    $eligible = 'Y';
+                }
+                elseif (strpos($row_prereq['programReq'],$userData['program']) !== FALSE){
+                    $eligible = 'Y';
+                }
+                elseif(empty($row_prereq['programReq'])){
+                    $eligible = 'Y';
+                }
+                else{
+                    $eligible = 'N';
+                }
+                
+                /*Check courses prereq
+                * At most course can have up to 3 prerequisites(i.e. ecor1000 AND sysc2002 AND elec3500). Each one can be a choice between other courses (i.e. sysc2003 OR sysc2001)
+                * Check non-empty PreReq column (i.e. firstPreReq, secondPreReq or thirdPreReq) if the courses that they contain were taken by the student. If they were, thats an eligible
+                * hit. If the hits correspond to the count then the course meets the prerequisite requirement.
+                */
+                $count = 0;
+                $hit = 0;
+                if(!empty($row_prereq['firstPreReq'])){
+                    $count++;
+                    $arrayPreReqCourses = explode(' OR',$row_prereq['firstPreReq']);
+                    foreach($arrayPreReqCourses as $course){
+                        $course = trim($course);
+                        $sql = "SELECT courseName FROM courses_Taken WHERE courseName ='".$course."';";
+                        $result = $connection->query($sql);
+                        if($result->num_rows != 0){ 
+                            $hit++;
+                            break;
+                        }
+                    }
+                }
+                if(!empty($row_prereq['secondPreReq'])){
+                    $count++;
+                    $arrayPreReqCourses = explode(' OR',$row_prereq['secondPreReq']);
+                    foreach($arrayPreReqCourses as $course){
+                        $course = trim($course);
+                        $sql = "SELECT courseName FROM courses_Taken WHERE courseName ='".$course."';";
+                        $result = $connection->query($sql);
+                        if($result->num_rows != 0){
+                            $hit++;
+                            break;
+                        }
+                    }
+                }
+                if(!empty($row_prereq['thirdPreReq'])){
+                    $count++;
+                    $arrayPreReqCourses = explode(' OR',$row_prereq['thirdPreReq']);
+                    foreach($arrayPreReqCourses as $course){
+                        $course = trim($course);
+                        $sql = "SELECT courseName FROM courses_Taken WHERE courseName ='".$course."';";
+                        $result = $connection->query($sql);
+                        if($result->num_rows != 0){
+                            $hit++;
+                            break;
+                        }
+                    }
+                }
+                if($hit != $count){
+                    $eligible = 'N';
+                }
+                //echo $row_prereq['courseName'].": ".$eligible."<br/>"; 
+            }
+            $sql = "UPDATE courses_Needed SET eligible='".$eligible."' WHERE courseName = '".$row_courses_needed['courseName']."';";
+            $result = $connection->query($sql);
+            if ($eligible == 'Y'){
+                echo $row_courses_needed['courseName']."<br/>";
+            }
+		}
 		
-		
-		$sql = "SELECT * FROM course_prereq WHERE courseName = '".$row_courses_needed['courseName']."';";
-		echo $sql."<br/>";
-		/*
-		$prereq = $connection->query($sql);
-		echo mysqli_error($connection);
-		$row_prereq_needed = $prereq->fetch_assoc();
-		
-		
-		$prereqList = array();
-		while($row_course_prereq = mysql_fetch_assoc($sql))
-		$prereqList[] = $row_course_prereq;
-		
-		foreach($prereqList as $prq){
-			$class1 = explode("or", $prq[firstPreReq]);
-		
-			$var = mysql_query("SELECT courseName FROM courses_taken WHERE courseName = '$class1[0]' OR  courseName = '$class1[1]';");
-			if(mysql_num_rows($var) == 1){
-				$sql =	"UPDATE courses_Needed SET eligible='Y' WHERE courseName='$result_needed';";
-				$fuck = $connection->query($sql);
-			}
-		
-		$class2 = explode("or", $prq[secondPreReq]);
-		$class3 = explode("or", $prq[thirdPreReq]); 
-		
-		}*/
 		
 		
 		

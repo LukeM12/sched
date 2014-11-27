@@ -56,11 +56,12 @@
        //Make the student table  
         $sql = "CREATE TABLE IF NOT EXISTS student(
                     studentID int NOT NULL,
-                    name varchar(255),
-                    password varchar(255),
-                    newUser varchar(1),
-                    onCourse varchar(1),
+                    name varchar(255) NOT NULL,
+                    password varchar(255) NOT NULL,
+                    newUser varchar(1) NOT NULL,
+                    onCourse varchar(1) NOT NULL,
 					year char NOT NULL,
+                    program varchar(5) NOT NULL,
                     PRIMARY KEY(studentID)
              );";
         $DB->execute($sql);
@@ -220,12 +221,12 @@
                     }
                     if(strstr($data[1], 'ENGINEERING') !== FALSE){
                         $data[1] = str_replace('ENGINEERING','',$data[1]);
-                        $stringToAppend .= 'E ';
+                        $stringToAppend .= 'ENG ';
                     }
                     $programReq = $stringToAppend;
                 }
                 else {
-                    $programReq = $stringToAppend;
+                    $programReq = '';
                 }
                 
                 //Setting year prerequisite
@@ -267,7 +268,7 @@
                 //Finally parse the courses
                 $preReqCourse = explode("AND",$data[1]);
                 $arrayOfPreReq = ['firstPreReq','secondPreReq','thirdPreReq'];
-                $arrayOfSubject = ["ECOR","ELEC","SYSC","COMP","MATH","STAT","PHYS"];
+                $arrayOfSubject = ["ECOR ","ELEC ","SYSC ","COMP ","MATH ","STAT ","PHYS "];
                 //Clean up blocks that dont contain courses
                 for($i = 0; $i < sizeof($preReqCourse); $i++){
                     $hit = 0;

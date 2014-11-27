@@ -70,29 +70,29 @@
     function testInitTables($DB) {
         //set up
         
-        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse) 
-                values ('111', 'Bob', '111', 'T', 'F');";
+        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse, year, program) 
+                values ('111', 'Bob', '111', 'T', 'F', 1, 'CE');";
         //$connection->query($sql);
         //echo mysqli_error($connection);
         $DB->execute($sql);
         echo $DB->getError();
         
-        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse, year) 
-                values ('222', 'Mike', '111', 'T', 'T', '3');";
+        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse, year, program) 
+                values ('222', 'Mike', '111', 'T', 'T', 3, 'CE');";
         //$connection->query($sql);
         //echo mysqli_error($connection);
         $DB->execute($sql);
         echo $DB->getError();
         
-        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse) 
-                values ('333', 'Blob', '111', 'F', 'F');";
+        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse, year, program) 
+                values ('333', 'Blob', '111', 'F', 'F', 2, 'CE');";
         //$connection->query($sql);
         //echo mysqli_error($connection);
         $DB->execute($sql);
         echo $DB->getError();
         
-        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse) 
-                values ('444', 'Mlob', '111', 'F', 'T');";
+        $sql = "INSERT INTO student(studentID, name, password, newUser, onCourse, year, program) 
+                values ('444', 'Mlob', '111', 'F', 'T', 3, 'CE');";
         //$connection->query($sql);
         //echo mysqli_error($connection);
         $DB->execute($sql);
