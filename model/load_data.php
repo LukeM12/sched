@@ -3,9 +3,10 @@
 
     function loadCSVfiles($DB) {
         $dir = getcwd();
+		echo "this is the current direc=".$dir;
         $pieces = explode("/", $dir);
         echo ' this is what hit is';
-        echo $pieces[4];
+
         $size_path = sizeof($pieces);
         $OS = '';
 
@@ -17,6 +18,7 @@
 		else {
 			$OS = $OS.'LINUX';
 		}
+		        echo $pieces[0];
 		//This is the effective path that directs to the data
 		//We could do an AJAX call for the data (i.e.("GET,"../course/data.csv")
 		//But permissions would disallow this kind of access to
@@ -25,37 +27,49 @@
 		
 		//Reconstruct the file path
         $final_path = '';
-		if ( strcmp($OS, "WINDOWS") == 0 ){  	
+		/*if ( strcmp($OS, "WINDOWS") == 0 ){  	
 			for ($i=0; $i < $size_path-1; $i++ ){
 				$final_path = $final_path.'\\'.$pieces[$i];
 			}
-		}
+		}*/
 		//Ok this works
-		if ( strcmp($OS, "LINUX") == 0 ){  	
+		
+		$ce_program = ''; //this array later on
+		$courses = '';
+		if ( strcmp($OS, "LINUX") == 0 ){ 
+			$i=0;
 			while( strcmp($pieces[$i], 'controller') != 0){
-				if (strcmp($pieces[$i], '')){ 
+				if ($i==0){
+					$final_path = $pieces[$i];
+				}	
+				else{
 					$final_path = $final_path.'/'.$pieces[$i];
-				}
+				}			
 				$i++;
+			}
+			$final_path = $final_path.'/';
+			$courses= $final_path.'model/course_data.csv';
 		}
 		
 				//Ok this works
 		if ( strcmp($OS, "WINDOWS") == 0 ){  	
+			$i=0;
 			while( strcmp($pieces[$i], 'controller') != 0){
-				if (strcmp($pieces[$i], '')){ 
+				if ($i==0){
+					$final_path = $pieces[$i];
+				}	
+				else{
 					$final_path = $final_path.'/'.$pieces[$i];
-				}
+				}			
 				$i++;
+			}
+			$final_path = $final_path.'/';
+			$courses= $final_path.'model/course_data.csv';
 		}
-        $final_path = $final_path.'/';
-         echo "\n BOOOOOOOOOM aaaaaaa   ";
-         echo $final_path;
-
-         echo "\n ";
-         
+		echo "THIS IS THIE SHIT BOI=".$courses;
 
         $enclosed =  '"';
-        $sql = "LOAD DATA LOCAL INFILE '../model/course_data.csv'
+        $sql = "LOAD DATA LOCAL INFILE '".$courses."'
                 INTO TABLE course
                 FIELDS 
                     TERMINATED BY ';'
@@ -67,14 +81,14 @@
         $DB->execute($sql);
         echo $DB->getError();
         
-        $sql = "LOAD DATA LOCAL INFILE '/opt/lampp/htdocs/model/ce_program_course_data.csv'
+        /*$sql = "LOAD DATA LOCAL INFILE '/opt/lampp/htdocs/model/ce_program_course_data.csv'
                 INTO TABLE ce_program
                 FIELDS 
                     TERMINATED BY ';'
                 LINES 
                     TERMINATED BY '\r\n';";
-        $DB->execute($sql);
-        echo $DB->getError();
+       //$DB->execute($sql);
+        //echo $DB->getError();*/
     }
 
     //mysql> LOAD DATA LOCAL INFILE '/opt/lampp/htdocs/model/course_data.csv'                 INTO TABLE course FIELDS TERMINATED BY ';' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES;
