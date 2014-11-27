@@ -66,21 +66,24 @@
 			$final_path = $final_path.'/';
 			$courses= $final_path.'model/course_data.csv';
 		}
-		echo "THIS IS THIE SHIT BOI=".$courses;
 
         $enclosed =  '"';
-        $sql = "LOAD DATA LOCAL INFILE '".$courses."'
-                INTO TABLE course
-                FIELDS 
-                    TERMINATED BY ';'
-                    ENCLOSED BY '".$enclosed."'
-                LINES 
-                    TERMINATED BY '\r\n'
-                IGNORE 1 LINES;";
-                
+	    $sql=   'LOAD DATA LOCAL INFILE "'.$courses.'"                 
+		        INTO TABLE course 
+		        FIELDS 
+		        	TERMINATED BY ";" 
+		        	ENCLOSED BY "\""
+		        		LINES TERMINATED BY "\n" IGNORE 1 LINES';
+
+        //Up until now, the path is effectively the right path to the data, and that is validated
         $DB->execute($sql);
         echo $DB->getError();
-        
+
+
+
+
+
+
         /*$sql = "LOAD DATA LOCAL INFILE '/opt/lampp/htdocs/model/ce_program_course_data.csv'
                 INTO TABLE ce_program
                 FIELDS 
