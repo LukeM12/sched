@@ -2,36 +2,58 @@
     //To load the script run "http://localhost/model/load_data.php"
 
     function loadCSVfiles($DB) {
-        /**
-        * Uncomment this section to parse the files on Linux box and comment out the 
-        * Windows section
-        */
-        /*
-	    $sql=   'LOAD DATA LOCAL INFILE "/opt/lampp/htdocs/model/course_data.csv"                 
-		        INTO TABLE course 
-		        FIELDS 
-		        	TERMINATED BY ";" 
-		        	ENCLOSED BY "\""
-		        		LINES TERMINATED BY "\n" IGNORE 1 LINES';
-                
-        $DB->execute($sql);
-        echo $DB->getError();
-        
-        $sql = 'LOAD DATA LOCAL INFILE "/opt/lampp/htdocs/model/ce_program_course_data.csv"
-                INTO TABLE ce_program
-                FIELDS 
-                    TERMINATED BY ";"
-                LINES 
-                	TERMINATED BY "\n";';
+        $dir = getcwd();
+        $pieces = explode("/", $dir);
+        echo ' this is what hit is';
+        echo $pieces[4];
+        $size_path = sizeof($pieces);
+        $OS = '';
 
-        $DB->execute($sql);
-        echo $DB->getError();
-        */
-        
-        /**
-        * Uncomment this section to parse the files on Windows box and comment out the 
-        * Linux section
-        */
+        if ( $size_path == 1 ){
+            $pieces = explode("\\", $dir);
+		    $size_path = sizeof($pieces);
+		    $OS = $OS.'WINDOWS';
+		}
+		else {
+			$OS = $OS.'LINUX';
+		}
+		//This is the effective path that directs to the data
+		//We could do an AJAX call for the data (i.e.("GET,"../course/data.csv")
+		//But permissions would disallow this kind of access to
+		//large data to the client browser
+		//in a "real" scenario. The best way to do is cross platform
+		
+		//Reconstruct the file path
+        $final_path = '';
+		if ( strcmp($OS, "WINDOWS") == 0 ){  	
+			for ($i=0; $i < $size_path-1; $i++ ){
+				$final_path = $final_path.'\\'.$pieces[$i];
+			}
+		}
+		//Ok this works
+		if ( strcmp($OS, "LINUX") == 0 ){  	
+			while( strcmp($pieces[$i], 'controller') != 0){
+				if (strcmp($pieces[$i], '')){ 
+					$final_path = $final_path.'/'.$pieces[$i];
+				}
+				$i++;
+		}
+		
+				//Ok this works
+		if ( strcmp($OS, "WINDOWS") == 0 ){  	
+			while( strcmp($pieces[$i], 'controller') != 0){
+				if (strcmp($pieces[$i], '')){ 
+					$final_path = $final_path.'/'.$pieces[$i];
+				}
+				$i++;
+		}
+        $final_path = $final_path.'/';
+         echo "\n BOOOOOOOOOM aaaaaaa   ";
+         echo $final_path;
+
+         echo "\n ";
+         
+
         $enclosed =  '"';
         $sql = "LOAD DATA LOCAL INFILE '../model/course_data.csv'
                 INTO TABLE course
@@ -45,7 +67,7 @@
         $DB->execute($sql);
         echo $DB->getError();
         
-        $sql = "LOAD DATA LOCAL INFILE '../model/ce_program.csv'
+        $sql = "LOAD DATA LOCAL INFILE '/opt/lampp/htdocs/model/ce_program_course_data.csv'
                 INTO TABLE ce_program
                 FIELDS 
                     TERMINATED BY ';'
@@ -122,4 +144,35 @@
     }
     
     
+        /**
+        * Uncomment this section to parse the files on Linux box and comment out the 
+        * Windows section
+        */
+        /*
+	    $sql=   'LOAD DATA LOCAL INFILE "/opt/lampp/htdocs/model/course_data.csv"                 
+		        INTO TABLE course 
+		        FIELDS 
+		        	TERMINATED BY ";" 
+		        	ENCLOSED BY "\""
+		        		LINES TERMINATED BY "\n" IGNORE 1 LINES';
+                
+        $DB->execute($sql);
+        echo $DB->getError();
+        
+        $sql = 'LOAD DATA LOCAL INFILE "/opt/lampp/htdocs/model/ce_program_course_data.csv"
+                INTO TABLE ce_program
+                FIELDS 
+                    TERMINATED BY ";"
+                LINES 
+                	TERMINATED BY "\n";';
+
+        $DB->execute($sql);
+        echo $DB->getError();
+        */
+        
+        /**
+        * Uncomment this section to parse the files on Windows box and comment out the 
+        * Linux section
+        */
+        /* In Linux the file paths is '/', and in Windows '\') */
 ?>
