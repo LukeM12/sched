@@ -48,7 +48,7 @@
 			}
 			$final_path = $final_path.'/';
 			$courses= $final_path.'model/course_data.csv';
-            $ce_program = $final_path.'model/ce_program_c.csv';
+            $ce_program = $final_path.'model/ce_program.csv';
 		}
 
         $enclosed =  '"';
@@ -67,7 +67,7 @@
 		        INTO TABLE ce_program
 		        FIELDS 
 		        	TERMINATED BY ";" 
-		        		LINES TERMINATED BY "\n" IGNORE 1 LINES';
+		        		LINES TERMINATED BY "\n"';
 
        $DB->execute($sql);
         echo $DB->getError();
