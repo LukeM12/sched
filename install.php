@@ -159,23 +159,26 @@
      * return: mysql prerequisite table is then populated
      **/
     function ParsePrerequisites($DB){
+        $courseName = '';
+        $programReq = '';
+        $concurrent = '';
+        $firstPreReq = '';
+        $secondPreReq = '';
+        $thirdPreReq = '';
+        $departmentPerReq = '';
         if (($handle = fopen("../model/prereq.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
                 $data[1] = strtoupper($data[1]);
-                $sql = "INSERT into course_prereq(courseName) VALUES ('".$data[0]."');";
-                $DB->execute($sql);
+                $courseName = $data[0];
                 
                 //Setting permission requirement
                 if(strstr($data[1], 'PERMISSION OF THE DEPARTMENT') !== FALSE) {
-                    $sql = "UPDATE course_prereq SET departmentPerReq = 'T'
-                            WHERE courseName='".$data[0]."';";
+                    $departmentPerReq = 'T';
                     $data[1] = strstr($data[1], 'PERMISSION OF THE DEPARTMENT', true);
                 }
                 else {
-                    $sql = "UPDATE course_prereq SET departmentPerReq = 'F'
-                            WHERE courseName='".$data[0]."';";
+                    $departmentPerReq = 'F';
                 }
-                $DB->execute($sql);
                 
                 //Setting program prerequisite
                 if(strstr($data[1], 'ENGINEERING') !== FALSE) {
@@ -216,30 +219,24 @@
                         $data[1] = str_replace('ENGINEERING','',$data[1]);
                         $stringToAppend .= 'E ';
                     }
-                    $sql = "UPDATE course_prereq SET programReq = '".$stringToAppend."'
-                            WHERE courseName='".$data[0]."';";
+                    $programReq = $stringToAppend;
                 }
                 else {
-                    $sql = "UPDATE course_prereq SET programReq = 'E'
-                            WHERE courseName='".$data[0]."';";
+                    $programReq = $stringToAppend;
                 }
-                $DB->execute($sql);
                 
                 //Setting year prerequisite
-                $year = 0;
+                $yearReq = 0;
                 if(strstr($data[1], 'YEAR') !== FALSE) {
                     if(strstr($data[1], 'FOURTH-YEAR STATUS IN') !== FALSE){
                         $data[1] = str_replace('FOURTH-YEAR STATUS IN','',$data[1]);
-                        $year = 4;
+                        $yearReq = 4;
                     }
                     if(strstr($data[1], 'THIRD-YEAR STATUS IN') !== FALSE){
                         $data[1] = str_replace('THIRD-YEAR STATUS IN','',$data[1]);
-                        $year = 3;
+                        $yearReq = 3;
                     }
                 }
-                $sql = "UPDATE course_prereq SET yearReq = ".$year."
-                        WHERE courseName='".$data[0]."';";
-                $DB->execute($sql);
                 
                 //Clean up
                 $tempStr = strstr($data[1], 'ONAL');
@@ -262,9 +259,7 @@
                     $pos = strpos($data[1],'MAY BE TAKEN CONCURRENTLY');
                     $data[1] = substr_replace($data[1],'',$pos,strlen('MAY BE TAKEN CONCURRENTLY'));
                 }
-                $sql = "UPDATE course_prereq SET concurrent = '".$course."'
-                        WHERE courseName='".$data[0]."';";
-                $DB->execute($sql);
+                $concurrent = $course;
                 
                 //Finally parse the courses
                 $preReqCourse = explode("AND",$data[1]);
@@ -285,19 +280,23 @@
                 $emptyRemoved = array_filter($preReqCourse);
                 for($i = 0; $i < sizeof($preReqCourse); $i++){
                     if($i == 0){
-                        $sql = "UPDATE course_prereq SET firstPreReq = '".$preReqCourse[0]."'
-                        WHERE courseName='".$data[0]."';";
+                        $firstPreReq = $preReqCourse[0];
                     }
                     if($i == 1){
-                        $sql = "UPDATE course_prereq SET firstPreReq = '".$preReqCourse[0]."', secondPreReq = '".$preReqCourse[1]."'
-                        WHERE courseName='".$data[0]."';";
+                        $firstPreReq = $preReqCourse[0]; 
+                        $secondPreReq = $preReqCourse[1];
                     }
                     if($i == 2){
-                        $sql = "UPDATE course_prereq SET firstPreReq = '".$preReqCourse[0]."', secondPreReq = '".$preReqCourse[1]."', thirdPreReq = '".$preReqCourse[2]."'
-                        WHERE courseName='".$data[0]."';";
+                        $firstPreReq = $preReqCourse[0]; 
+                        $secondPreReq = $preReqCourse[1];
+                        $thirdPreReq = $preReqCourse[2];
                     }
                 }
+                $format = "INSERT INTO course_prereq(courseName,yearReq,programReq,departmentPerReq,concurrent,firstPreReq,secondPreReq,thirdPreReq)
+                        VALUES('%s',%s,'%s','%s','%s','%s','%s','%s');";
+                $sql = sprintf($format,$courseName,$yearReq,$programReq,$departmentPerReq,$concurrent,$firstPreReq,$secondPreReq,$thirdPreReq);
                 $DB->execute($sql);
+                echo $DB->getError();
             }
             fclose($handle);
         }
