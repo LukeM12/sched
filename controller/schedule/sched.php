@@ -40,25 +40,51 @@ class Schedule{
         //Check how many sections in that lecture
         //Only one section
         if($lectures->num_rows==1){
-            $lectures_info = $lectures->fetch_assoc();
+            $course = $lectures->fetch_assoc();
             $sql = "SELECT * FROM courses_Needed 
                     WHERE eligible='Y' AND lecSection != ''";
-            $lectureTimes = $DB->execute($sql);
+            $courseNeeded = $DB->execute($sql);
             echo $DB->getError();
             //First class to register
-            if($lectureTimes->num_rows == 0){
+            if($courseNeeded->num_rows == 0){
                 $format = "UPDATE courses_Needed SET lecSection='%s', lecDay='%s',
                            lecStartTime='%s', lecEndTime='%s' WHERE courseName='%s'";
-                $sql = sprintf($format,$lectures_info['sequence'] ,$lectures_info['days'] ,$lectures_info['startTime'] ,$lectures_info['endTime'],
-                                       $lectures_info['subject']." ".$lectures_info['courseID']);
+                $sql = sprintf($format,$course['sequence'] ,$course['days'] ,$course['startTime'] ,$course['endTime'],
+                                       $course['subject']." ".$course['courseID']);
                 $DB->execute($sql);
+            }
+            else{
+                $hit = false;
+                while($row_courseNeeded = $courseNeeded->fetch_assoc()){
+                    $courseDays = str_split($course['days']);
+                    $courseNeededDays = str_split($row_courseNeeded['lecDay']);
+                    
+                    foreach($courseNeededDays as $daysCN)
+                    {
+                        foreach($courseDays as $daysC){
+                            if($daysCN == $daysC){
+                                if(($row_courseNeeded['lecEndTime']>$course['startTime']) && ($row_courseNeeded['lecStartTime']<$course['endTime'])){
+                                    $hit = true;
+                                    break 3;
+                                }
+                            }
+                        }
+                    }
+                }
+                if($hit == false){
+                    $format = "UPDATE courses_Needed SET lecSection='%s', lecDay='%s',
+                               lecStartTime='%s', lecEndTime='%s' WHERE courseName='%s'";
+                    $sql = sprintf($format,$course['sequence'] ,$course['days'] ,$course['startTime'] ,$course['endTime'],
+                                           $course['subject']." ".$course['courseID']);
+                    $DB->execute($sql);
+                }
             }
         }
         elseif($lectures->num_rows>1){
         }
     }
     
-    public function 
+    
 }
 
 ?>
