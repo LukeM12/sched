@@ -27,7 +27,7 @@
 		
 		if($num>0)
 		{
-            //This is where the cookie is set
+            //Set log on cookie
 			$user_info = $data->fetchAssoc($rows); //Fetch user info
 			$db_password = $user_info['password'];
 			$password = $_POST['Password'];
@@ -36,9 +36,13 @@
             {
 				setcookie("user", $studentID, time() + 3600, "/");
                 if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F')
-                {echo " NOw you are logged in, take an action";
-                	echo '<script type="text/javascript">', 'alert("Hello Worrrld");', '</script>' ;
-                	         
+                {
+                	$value = "Hello World";
+
+//                 	echo '<button onclick="alert(\''.$value.'\')">Click me</button>';
+//                 	echo '<button onclick="alert(\''.$value.'\')">Click me</button>';
+
+                	loadOffCoursePage();
                     //header('Refresh:1;url=/view/offCourse.html');
                 	
                 	//echo '<script type="text/javascript">'    , 'alert("Hello World")'    , '</script>' ;
@@ -46,12 +50,12 @@
                 	//echo '<script type="text/javascript">'    , 'jsfunction();'    , '</script>' ;
                 	
                 }
-				else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T')
+					else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T')
                 {
-                	echo '<script type="text/javascript">'    , 'alert("Hello World")'    , '</script>' ;
+                	echo '<script type="text/javascript">'    , 'alert("asd")'    , '</script>' ;
         	echo " NOw you are logged in, take an action";
                 	//echo '<script type="text/javascript">'    , 'jsfunction();'    , '</script>' ;
-                   // header('Refresh:1;url=/controller/onCourse.php');
+                   header('Refresh:1;url=/controller/onCourse.php');
                     //exit;
                 }	
 			}
@@ -82,5 +86,11 @@
                 echo "</tr>";        
             //Insert the test here;
         }
-    }  
+    }
+
+    function loadOffCoursePage(){
+
+    			require('../view/offCourse.html');
+
+	    }
 ?>

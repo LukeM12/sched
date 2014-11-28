@@ -72,7 +72,6 @@ function LoadLoginPage(){
 	xmlhttp.open("GET","view/pages/login_page.html",true);
 	xmlhttp.send();
 }
-
 /*************************************************
 				PHP BACKEND
 */
@@ -107,30 +106,26 @@ function SubmitForm(){
 	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xmlhttp.send("Password=" + pass.value + "&StudentNum=" + num.value);
 }
-
-
 /**
  * Description: Load the Page for Logging in, into the main Div
  * return: The HTML content for the login page
  */
-//function SubmitForm(){
-//	var xmlhttp;
-//	if (window.XMLHttpRequest) {// IE7+, Firefox, Chrome, Opera, Safari
-//		xmlhttp=new XMLHttpRequest();
-//	}
-//	else {// IE6, IE5
-//		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-//	}
-//	xmlhttp.onreadystatechange = 
-//		function()
-//		{
-//			if (xmlhttp.readyState==4 && xmlhttp.status==200){
-//				document.getElementById("MainContent").innerHTML=xmlhttp.responseText;
-//		    }
-//		}
-//	document.getElementById("MainContent").innerHTML="Did ti worl";
-//	xmlhttp.open("POST","controller/login.php",true);
-//	alert("Did it work");
-//	xmlhttp.send();
-//}
+function LoadOffCourse(){
+	var xmlhttp;
+	if (window.XMLHttpRequest) {// IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else {// IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = 
+		function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200){
+				document.getElementById("MainBlock").innerHTML=xmlhttp.responseText;
+		    }
+		}
+	xmlhttp.open("GET","view/offCourse.html",true);;
+	xmlhttp.send();
+}
 
