@@ -96,11 +96,16 @@ function SubmitForm(){
 				document.getElementById("MainContent").innerHTML=xmlhttp.responseText;
 		    }
 		}
-	alert("Did it work");
+	//alert("Did it work");
 	//xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	var pass = document.getElementById('Password');
+	var num = document.getElementById('Number');
+	///alert(a.value);
+	//var a = document.getElementById('Number');
+	//alert(a.value);
 	xmlhttp.open("POST","controller/login.php",true);
-	
-	xmlhttp.send();
+	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlhttp.send("Password=" + pass.value + "&StudentNum=" + num.value);
 }
 
 

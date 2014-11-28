@@ -36,7 +36,7 @@
             {
 				setcookie("user", $studentID, time() + 3600, "/");
                 if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F')
-                {
+                {echo " NOw you are logged in, take an action";
                 	echo '<script type="text/javascript">', 'alert("Hello Worrrld");', '</script>' ;
                 	         
                     //header('Refresh:1;url=/view/offCourse.html');
@@ -49,7 +49,7 @@
 				else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T')
                 {
                 	echo '<script type="text/javascript">'    , 'alert("Hello World")'    , '</script>' ;
-        
+        	echo " NOw you are logged in, take an action";
                 	//echo '<script type="text/javascript">'    , 'jsfunction();'    , '</script>' ;
                    // header('Refresh:1;url=/controller/onCourse.php');
                     //exit;
