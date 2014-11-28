@@ -2,9 +2,10 @@
 /*
  * Author :Volod
  * Contributor: Luke M
+ * Contributor: Matt C
  */
 /** 
- * Description: Retrive the information from the student
+ * Description: Retrieve the information from the student
  * @param $DB: Live Instance of the Database
  * return: a sql result of the student being requested
  */
