@@ -6,24 +6,42 @@
 	$sql = "SELECT * FROM student WHERE studentID = '$login';";
 	$id = $connection->query($sql);
 	$row_id = $id->fetch_assoc();
-	$toTake = $row_id['year'] - 1;
+	
+	
+	
+	
+	
+	onCourse_CoursesTaken($login, $connection, $row_id);
+	onCourse_CoursesNeeded($login, $connection,$row_id);
+	
+	
+	echo "Done"; // echo done just to make sure this works before timing out
+	
+	function onCourse_CoursesTaken($login, $connection, $row_id){
+
+		$toTake = $row_id['year'] - 1;
+		
+		while ($toTake != 0){
+			$sql = "SELECT * FROM ce_program WHERE year ='$toTake';";
+			$classes = $connection->query($sql);
+		
+				while($row_classes = $classes->fetch_assoc()){ 
+		
+		
+					$sql = "INSERT IGNORE INTO courses_taken (studentID, courseName) VALUES ('$login', '".$row_classes['courseName']."')";
+					
+					$insert = $connection->query($sql);
+				}
+		
+			$toTake = $toTake - 1;
+						
+		}  					
+	
+	}
+	
+	function onCourse_CoursesNeeded($login, $connection, $row_id){
 	$nextLevel = $row_id['year']; 
 	$dynamicLevel = $row_id['year']; 
-	
-	while ($toTake != 0){
-		$sql = "SELECT * FROM ce_program WHERE year ='$toTake';";
-		$classes = $connection->query($sql);
-	
-			while($row_classes = $classes->fetch_assoc()){ 
-	
-	
-				$sql = "INSERT IGNORE INTO courses_taken (studentID, courseName) VALUES ('$login', '".$row_classes['courseName']."')";
-				$insert = $connection->query($sql);
-			}
-	
-		$toTake = $toTake - 1;
-					
-	}  					
 	
 	while($nextLevel < 5){
 	$sql = "SELECT * FROM ce_program WHERE year ='$nextLevel';";			
@@ -43,7 +61,10 @@
 															}					
 		$nextLevel = $nextLevel + 1;
 	}	
-	echo "Done"; // echo done just to make sure this works before timing out
+	
+	
+	}
+	
 	?>
 
 

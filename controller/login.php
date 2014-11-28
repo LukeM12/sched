@@ -45,13 +45,14 @@
                 if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F')
                 {
                     header('Refresh:1;url=/view/offCourse.html');
-                    exit;
+                   
+				   exit;
                 }
 				else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T')
                 {
                     header('Refresh:1;url=/controller/onCourse.php');
                     exit;
-                } 
+                }	
 			}
 			else
             {
