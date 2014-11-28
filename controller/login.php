@@ -9,7 +9,7 @@
     require_once("../model/db.php");
     require_once("../install.php");
     require_once("../controller/databaseManipulation.php");
-    require_once("../controller/schedule/sched.php");
+    require_once("../controller/schedule/ScheduleClass.php");
     $data = new database("uni");
     
     if(isset($_POST['typeofrequest'])){

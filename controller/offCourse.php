@@ -1,6 +1,6 @@
 <?php
 populateCoursesTaken();
-/*
+/**
  * Description :Store the classes that the user specified that they took in the DB 
  * return: If the courses effectively got added the the uni db
  */

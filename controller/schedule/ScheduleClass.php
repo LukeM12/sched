@@ -4,12 +4,15 @@ class Schedule{
 
     private $studentID;
     private $DB;
-
+	
     public function __construct($studentID,$DB) {
         $this->studentID = $studentID;
         $this->DB = $DB;
     }
-    
+    /** 
+     * Description: 
+     * @param unknown $DB
+     */
     public function setSectionInCoursesNeeded($DB){
         $sql = "SELECT * FROM courses_Needed WHERE studentID='".$this->studentID."' AND eligible='Y' AND term='F';";
         $eligibleClass = $DB->execute($sql);
@@ -38,10 +41,12 @@ class Schedule{
         }
                      
     }
-    
+    /** 
+     * Check how many sections in that lecture
+     * @param $DB : Live instance of the database
+     * @param $lectures: Sql result form a previous cal to the server
+     */
     public function getSection($DB, $lectures){
-        
-        //Check how many sections in that lecture
         //One or more sections
         if($lectures->num_rows>=1){
             $course = $lectures->fetch_assoc();

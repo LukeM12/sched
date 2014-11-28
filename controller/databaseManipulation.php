@@ -1,9 +1,17 @@
 <?php
+/*
+ * Author :Volod
+ * Contributor: Luke M
+ */
+/** 
+ * Description: Retrive the information from the student
+ * @param $DB: Live Instance of the Database
+ * return: a sql result of the student being requested
+ */
 function getStudentInfo($DB){
     $login = $_COOKIE['user'];
     $sql = "SELECT * FROM student WHERE studentID = '$login';";
     $result = $DB->execute($sql);
-    
     return $result->fetch_assoc();
 }
 
@@ -18,6 +26,10 @@ function populateCoursesTaken_offCourse($DB){
     echo "DONE";
 }
 
+/** 
+ * Description: Populate a the courses taken from an oncourse student 
+ * @param $DB: Live Instance of the Database
+ */
 function populateCoursesTaken_onCourse($DB){
     $studentInfoRow = getStudentInfo($DB);
     
@@ -25,15 +37,17 @@ function populateCoursesTaken_onCourse($DB){
     while ($toTake != 0){
 			$sql = "SELECT * FROM ce_program WHERE year ='$toTake';";
 			$classes = $DB->execute($sql);
-				while($row_classes = $classes->fetch_assoc()){ 
-					$sql = "INSERT IGNORE INTO courses_taken (studentID, courseName) VALUES ('".$studentInfoRow['studentID']."', '".$row_classes['courseName']."')";
-					$insert = $DB->execute($sql);
-				}
-		
+			while($row_classes = $classes->fetch_assoc()){ 
+				$sql = "INSERT IGNORE INTO courses_taken (studentID, courseName) VALUES ('".$studentInfoRow['studentID']."', '".$row_classes['courseName']."')";
+				$insert = $DB->execute($sql);
+			}
 			$toTake = $toTake - 1;					
     }
 }
-
+/**
+ * Description: Populate the courses taken table from an oncourse student
+ * @param $DB: Live Instance of the Database
+ */
 function populateCoursesNeeded_onCourse($DB){
     $studentInfoRow = getStudentInfo($DB);
     $nextLevel = $studentInfoRow['year']; 
@@ -42,9 +56,7 @@ function populateCoursesNeeded_onCourse($DB){
 	while($nextLevel < 5){
         $sql = "SELECT * FROM ce_program WHERE year ='$nextLevel';";			
         $nextClasses = $DB->execute($sql);
-	
 		while($row_nextClasses = $nextClasses->fetch_assoc()){
-	
 			if($nextLevel == $dynamicLevel){ //this is to ensure the eligibility can be set dynamically, not using hard coded values
 					$sql = "INSERT IGNORE INTO courses_needed (studentID, courseName, year, term, eligible) VALUES ('".$studentInfoRow['studentID']."', '".$row_nextClasses['courseName']."', '$nextLevel','".$row_nextClasses['term']."' , 'Y')";
 					$insert1 = $DB->execute($sql);
@@ -53,15 +65,16 @@ function populateCoursesNeeded_onCourse($DB){
 					$sql = "INSERT IGNORE INTO courses_needed (studentID, courseName, year, term, eligible) VALUES ('".$studentInfoRow['studentID']."', '".$row_nextClasses['courseName']."', '$nextLevel','".$row_nextClasses['term']."' , 'N')";
 					$insert2 = $DB->execute($sql);
 			}
-	
-															}					
+		}					
 		$nextLevel = $nextLevel + 1;
 	}	
 }
-
+/**
+ * Description: Populate the courses Needed table from an offcourse student
+ * @param $DB: Live Instance of the Database
+ */
 function populateCoursesNeeded_offCourse($DB){
-    $studentInfoRow = getStudentInfo($DB);
-    
+    $studentInfoRow = getStudentInfo($DB); 
     $sql = "SELECT * FROM ce_program;";
     $result_ce_req = $DB->execute($sql);
     //Iterate each entry from ce_program and test them against the courses the user has taken
@@ -82,10 +95,15 @@ function populateCoursesNeeded_offCourse($DB){
     }
     setEligibleCourses($DB, $studentInfoRow);
 }
-
+/**
+ * Description: 
+ * @param unknown $DB
+ * @param unknown $studentInfoRow
+ */
 function setEligibleCourses($DB, $studentInfoRow){
-    
+    //Get the courses
     $sql = "SELECT * FROM courses_Needed WHERE studentID = '".$studentInfoRow['studentID']."';";
+    
     $courses_needed = $DB->execute($sql);
     while($row_courses_needed = $courses_needed->fetch_array(MYSQLI_ASSOC)){
         //Check if the class is in prereq table. If its not then student is eligible to take it.
