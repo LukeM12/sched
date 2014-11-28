@@ -10,7 +10,7 @@
     require_once("../install.php");
     require_once("../controller/databaseManipulation.php");
     require_once("../controller/schedule/ScheduleClass.php");
-    ini_set('max_execution_time', 90);
+    ini_set('max_execution_time', 200);
     $data = new database("uni");
     
     $studentID = $_POST['StudentNum']; 
