@@ -9,6 +9,7 @@
     require_once("../model/db.php");
     require_once("../install.php");
     require_once("../controller/databaseManipulation.php");
+    require_once("../controller/schedule/sched.php");
     $data = new database("uni");
     
     if(isset($_POST['typeofrequest'])){
@@ -50,10 +51,10 @@
                 	loadOffCoursePage();      	
                 }
 				else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T'){
-                    echo "HERE ";
         			populateCoursesTaken_onCourse($data);
-                    echo "HERE ";
                     populateCoursesNeeded_onCourse($data);
+                    $sched = new Schedule($studentID, $data);
+                    $sched->setSectionInCoursesNeeded($data);
                 }	
 			}
 			else {

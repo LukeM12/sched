@@ -17,7 +17,7 @@
 	}
 	else {
 	}
-    //testInitTables($DB);
+    testInitTables($DB);
     
     
     /**************************************** Database Configuration and Creation ************************************/
@@ -51,7 +51,8 @@
                     days varchar(5) NOT NULL,
                     startTime varchar(4) NOT NULL,
                     endTime varchar(4) NOT NULL,
-                    room_cap int NOT NULL
+                    room_cap int NOT NULL,
+                    term char NOT NULL
              );";
         $DB->execute($sql);
         echo $DB->getError();
@@ -85,7 +86,14 @@
                     term char NOT NULL,
 					eligible char NOT NULL,
 					registered char NOT NULL,
-                    entry int);";
+                    lecSection char NOT NULL,
+                    lecDay varchar(5) NOT NULL,
+                    lecStartTime varchar(4) NOT NULL,
+                    lecEndTime varchar(4) NOT NULL,
+                    linkSection varchar(4) NOT NULL,
+                    linkDay varchar(5) NOT NULL,
+                    linkStartTime varchar(4) NOT NULL,
+                    linkEndTime varchar(4) NOT NULL);";
             
         $DB->execute($sql);
         echo $DB->getError();
