@@ -56,7 +56,7 @@ class Schedule{
             echo $DB->getError();
             //First class to register
             if($courseNeeded->num_rows == 0){
-                $format = "UPDATE courses_Needed SET lecSection='%s', lecDay='%s',
+                $format = "UPDATE courses_Needed SET registered = 'Y', lecSection='%s', lecDay='%s',
                            lecStartTime='%s', lecEndTime='%s' WHERE courseName='%s'";
                 $sql = sprintf($format,$course['sequence'] ,$course['days'] ,$course['startTime'] ,$course['endTime'],
                                        $course['subject']." ".$course['courseID']);
@@ -84,7 +84,7 @@ class Schedule{
                     }
                 }
                 if($hit == false){
-                    $format = "UPDATE courses_Needed SET lecSection='%s', lecDay='%s',
+                    $format = "UPDATE courses_Needed SET registered = 'Y', lecSection='%s', lecDay='%s',
                                lecStartTime='%s', lecEndTime='%s' WHERE courseName='%s'";
                     $sql = sprintf($format,$course['sequence'] ,$course['days'] ,$course['startTime'] ,$course['endTime'],
                                            $course['subject']." ".$course['courseID']);
@@ -96,7 +96,24 @@ class Schedule{
         //}
     }
     
-    
+    public function printTable($DB){
+        $sql = "SELECT * FROM courses_Needed WHERE term = 'F' AND eligible = 'Y' AND registered ='Y';";
+        $result_fall = $DB->execute($sql);
+        echo "FALL courses:<br/><table><tr><th>CourseName</th><th>Section</th><th>Days</th><th>StartTime</th><th>EndTime</th></tr>";
+        while ($courses_registered_fall = $result_fall->fetch_assoc()){
+            echo "<tr><td>".$courses_registered_fall['courseName']."</td><td>".$courses_registered_fall['lecSection']."</td><td>".$courses_registered_fall['lecDay']."</td><td>".$courses_registered_fall['lecStartTime']."</td><td>".$courses_registered_fall['lecEndTime']."</td></tr>";
+        }
+        echo "</table><br/>";
+        
+        $sql = "SELECT * FROM courses_Needed WHERE term = 'W' AND eligible = 'Y' AND registered ='Y';";
+        $result_winter = $DB->execute($sql);
+        echo "Winter courses:<br/><table><tr><th>CourseName</th><th>Section</th><th>Days</th><th>StartTime</th><th>EndTime</th></tr>";
+        while ($courses_registered_winter = $result_winter->fetch_assoc()){
+            echo "<tr><td>".$courses_registered_winter['courseName']."</td><td>".$courses_registered_winter['lecSection']."</td><td>".$courses_registered_winter['lecDay']."</td><td>".$courses_registered_winter['lecStartTime']."</td><td>".$courses_registered_winter['lecEndTime']."</td></tr>";
+        }
+        echo "</table><br/>";
+        
+    }
 }
 
 ?>

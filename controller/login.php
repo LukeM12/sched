@@ -47,6 +47,7 @@
                     populateCoursesNeeded_onCourse($data);
                     $sched = new Schedule($studentID, $data);
                     $sched->setSectionInCoursesNeeded($data);
+                    $sched->printTable($data);
                 }	
 			}
 			else {
