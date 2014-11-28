@@ -24,7 +24,7 @@
 		$rows = $data->execute($sql); //Retrieve user from table 
 		echo $data->getError();
 		$num = $rows->num_rows;
-		
+		//If we do get a result..
 		if($num>0)
 		{
             //Set log on cookie
@@ -32,38 +32,18 @@
 			$db_password = $user_info['password'];
 			$password = $_POST['Password'];
 			//If the password is correct
-			if($password == $db_password)
-            {
+			if($password == $db_password){
 				setcookie("user", $studentID, time() + 3600, "/");
-                if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F')
-                {
+                if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F'){
                 	$value = "Hello World";
-
-//                 	echo '<button onclick="alert(\''.$value.'\')">Click me</button>';
-//                 	echo '<button onclick="alert(\''.$value.'\')">Click me</button>';
-
-                	loadOffCoursePage();
-                    //header('Refresh:1;url=/view/offCourse.html');
-                	
-                	//echo '<script type="text/javascript">'    , 'alert("Hello World")'    , '</script>' ;
-                	//exit;                	
-                	//echo '<script type="text/javascript">'    , 'jsfunction();'    , '</script>' ;
-                	
+                	loadOffCoursePage();      	
                 }
-					else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T')
-                {
-                	echo '<script type="text/javascript">'    , 'alert("asd")'    , '</script>' ;
-        	echo " NOw you are logged in, take an action";
-                	//echo '<script type="text/javascript">'    , 'jsfunction();'    , '</script>' ;
-                   header('Refresh:1;url=/controller/onCourse.php');
-                    //exit;
+				else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T'){
+        			echo " NOw you are logged in, take an action";
                 }	
 			}
-			else
-            {
+			else {
 				echo "Password is incorrect. Please enter a valid password.";
-                header('Refresh:1;url=/');
-                //exit;
 			}
 		}
 		else
@@ -71,8 +51,6 @@
             echo "<br>Account#".$studentID . " does not exist. Please create an account\n";
 		}
 	}
-    
-    
     /**
      * Description: Create the necessary tables for the site
      * param: A live instance of the database
@@ -89,8 +67,6 @@
     }
 
     function loadOffCoursePage(){
-
-    			require('../view/offCourse.html');
-
-	    }
+		 require('../view/offCourse.html'); 
+	 }
 ?>
