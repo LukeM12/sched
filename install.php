@@ -1,4 +1,6 @@
 <!-- Author : Luke Morrison
+              Volodymyr Sharovar
+              Matt Crooke
 
      Email : lukemorrison@carleton.cmail.ca
      Description : A single script to create and populate our database 
