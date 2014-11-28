@@ -10,9 +10,17 @@ html {
 #nav {
     line-height:30px;
     background-color:#eeeeee;
-	height:300px;
+	height:600;
 	width:300px;
     float:left;
+    padding:5px;
+}
+button {
+    line-height:30px;
+    background-color:#eeeeee;
+	height:75px;
+	width:300px;
+    float:up;
     padding:5px;
 }
 #section {
@@ -26,9 +34,96 @@ html {
     text-align:center;
     padding:5px;
 }
+#menu { 
+    background-color: #686868  ;
+    float:center;
+}
+body {
+    background-color: #b0c4de;
+}
 #loginView {
 
 }
 #signupView {
 
+}
+div.menu2
+{
+    /*width:500px;margin:0 auto;*//*Uncomment this line to make the menu center-aligned.*/
+    text-align:center;
+    background-image: url(bg1.gif);
+    border:1px solid black;
+    font-size:0;
+}
+
+div.menu2 a
+{
+    display: inline-block;
+    padding: 0 20px;
+    background-image: url(bg.gif);
+    color:black;
+    text-decoration:none;
+    font: bold 12px Arial;
+    line-height: 32px;
+}
+
+div.menu2 a:hover, div.menu2 a.current
+{
+    background-position:0 -60px;
+}
+
+div.menu2 a.dummy
+{
+    width:2px;
+    padding:0 0;
+}
+
+nav ul {
+	background: #efefef; 
+	background: linear-gradient(top, #efefef 0%, #bbbbbb 100%);  
+	background: -moz-linear-gradient(top, #efefef 0%, #bbbbbb 100%); 
+	background: -webkit-linear-gradient(top, #efefef 0%,#bbbbbb 100%); 
+	box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+	padding: 0 20px;
+	border-radius: 10px;  
+	list-style: none;
+	position: relative;
+	display: inline-table;
+}
+	nav ul:after {
+		content: ""; clear: both; display: block;
+	}
+	
+	nav ul li {
+	float: left;
+}
+
+	nav ul li:hover a {
+		color: #fff;
+	}
+	
+	nav ul li a {
+		display: block; padding: 25px 140px;
+		color: #757575; text-decoration: none;
+	}
+	
+	nav ul ul {
+	background: #5f6975; border-radius: 0px; padding: 0;
+	position: absolute; top: 100%;
+}
+	nav ul ul li {
+		float: none; 
+		border-top: 1px solid #6b727c;
+		border-bottom: 1px solid #575f6a;
+		position: relative;
+	}
+		nav ul ul li a {
+			padding: 15px 80px;
+			color: #fff;
+		}	
+			nav ul ul li a:hover {
+				background: #4b545f;
+			}
+nav ul ul ul {
+	position: absolute; left: 100%; top:0;
 }
