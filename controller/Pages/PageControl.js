@@ -132,23 +132,23 @@ function LoadOffCourse(){
  * Interact with the user when they input their classes
  * return: The HTML content for the login page
  */
-//function LoadOffCourse(){
-//	var xmlhttp;
-//	if (window.XMLHttpRequest) {// IE7+, Firefox, Chrome, Opera, Safari
-//		xmlhttp=new XMLHttpRequest();
-//	}
-//	else {// IE6, IE5
-//		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-//	}
-//	xmlhttp.onreadystatechange = 
-//		function()
-//		{
-//			if (xmlhttp.readyState==4 && xmlhttp.status==200){
-//				document.getElementById("MainBlock").innerHTML=xmlhttp.responseText;
-//		    }
-//		}
-//	xmlhttp.open("GET","view/offCourse.html",true);;
-//	xmlhttp.send();
-//}
+function LoadSchedule(){
+	var xmlhttp;
+	if (window.XMLHttpRequest) {// IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else {// IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = 
+		function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200){
+				document.getElementById("MainBlock").innerHTML="CHANVE THE WORD";
+		    }
+		}
+	xmlhttp.open("GET","view/offCourse.html",true);;
+	xmlhttp.send();
+}
 //
 //<form method="post" action="../controller/offCourse.php" onsubmit="">

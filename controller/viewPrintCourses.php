@@ -157,15 +157,7 @@ function printCoursesNeeded($connection){
             if ($eligible == 'Y'){
                 echo $row_courses_needed['courseName']."<br/>";
             }
-		}
-		
-		
-		
-		
-		
+		}	
 	}
-	
-	
-	
-	
+
 ?>

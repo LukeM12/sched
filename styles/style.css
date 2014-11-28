@@ -15,6 +15,11 @@ html {
     float:left;
     padding:5px;
 }
+#buttonWrapper {
+	text-align:center;
+	height:100%;
+	width:100%;
+}
 button {
     line-height:30px;
     background-color:#eeeeee;
@@ -22,6 +27,10 @@ button {
 	width:300px;
     float:up;
     padding:5px;
+
+    position: absolute:
+    top: 50%;
+}
 }
 #section {
     float:left;
@@ -101,7 +110,11 @@ nav ul {
 	nav ul li:hover a {
 		color: #fff;
 	}
-	
+table, td  {
+   border: 1px solid black;
+	text-align: center;
+
+}
 	nav ul li a {
 		display: block; padding: 25px 140px;
 		color: #757575; text-decoration: none;

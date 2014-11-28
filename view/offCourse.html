@@ -1,17 +1,11 @@
-<!DOCTYPE html>
 
-<html>
-<head>
+
 <link type="text/css" href="ofCourseStyle.css">
-<style>
-table, td  {
-    border: 1px solid black;
-	text-align: center;
-	
-}
-</style>
-</head>
-<body onLoad="LoadOffCourse()">
+
+
+<body >
+
+<h2><b><center>Choose Your Courses</center></b></h2>
 <table width="100%"> 
  <colgroup>
  <col width="12.5%">
@@ -48,7 +42,8 @@ table, td  {
 </div>
 </tr>
 
-<form method="post" action="../controller/offCourse.php" onsubmit="">
+<!--  form action="" onsubmit="alert('hello world')"-->
+
 <tr>
 <div colspan="1" class="table" height="100">
 <td height="85"style="border:9px solid green"> 
@@ -188,19 +183,21 @@ table, td  {
 </td>
 </tr>
 </div>
-
 <tr>
-			<td colspan="1" style="text-align:center-left;">
-				<input type="hidden" value="submitclasses" name="typeofrequest"/>
-				<input id="Submit" type="submit" value="Submit" 
-				style="width:90%"/>
-			</td>
-		</tr>
+		<!--  td colspan="1" style="text-align:center-left;">
+			<input type="hidden" value="submitclasses" name="typeofrequest"/>
+			<input id="Submit" type="submit" value="Submit" 
+			style="width:90%"/>
+		</td-->
+
+	</tr>
 
 
 </table>
-
-</form>
+<div id="buttonWrapper">
+		<button onclick="">Submit</button>
+</div>
+<!-- /form-->
 
 </body>
 
