@@ -14,12 +14,10 @@
     	initTables($DB);
 		loadCSVfiles($DB);
 		ParsePrerequisites($DB);
-    	echo "Table does not exist";
 	}
 	else {
-		echo "Table exists";
 	}
-    testInitTables($DB);
+    //testInitTables($DB);
     
     
     /**************************************** Database Configuration and Creation ************************************/

@@ -15,18 +15,11 @@
 
     /**
      * 
-     * @param unknown $data - the database
-     * @param unknown $studentID - the users id 
-     * @param unknown $password - the user password
+     * @param $data - the database
+     * @param $studentID - the users id 
+     * @param $password - the user password
      */
    function Login($data,$studentID,$password ){
-		
-		// Minimum req to prevent php injection
-		/*$sql = sprintf(
-				"SELECT*FROM users WHERE student_num='%s'",
-				$data->realEscStr($login));
-				*/
-        
 		$sql = 'SELECT * FROM student WHERE studentID=\''.$studentID.'\'';		
 		$rows = $data->execute($sql); //Retrieve user from table 
 		echo $data->getError();
@@ -38,27 +31,35 @@
 			$user_info = $data->fetchAssoc($rows); //Fetch user info
 			$db_password = $user_info['password'];
 			$password = $_POST['Password'];
+			//If the password is correct
 			if($password == $db_password)
             {
 				setcookie("user", $studentID, time() + 3600, "/");
-                
                 if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'F')
                 {
-                    header('Refresh:1;url=/view/offCourse.html');
-                   
-				   exit;
+                	echo '<script type="text/javascript">', 'alert("Hello Worrrld");', '</script>' ;
+                	         
+                    //header('Refresh:1;url=/view/offCourse.html');
+                	
+                	//echo '<script type="text/javascript">'    , 'alert("Hello World")'    , '</script>' ;
+                	//exit;                	
+                	//echo '<script type="text/javascript">'    , 'jsfunction();'    , '</script>' ;
+                	
                 }
 				else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T')
                 {
-                    header('Refresh:1;url=/controller/onCourse.php');
-                    exit;
+                	echo '<script type="text/javascript">'    , 'alert("Hello World")'    , '</script>' ;
+        
+                	//echo '<script type="text/javascript">'    , 'jsfunction();'    , '</script>' ;
+                   // header('Refresh:1;url=/controller/onCourse.php');
+                    //exit;
                 }	
 			}
 			else
             {
 				echo "Password is incorrect. Please enter a valid password.";
                 header('Refresh:1;url=/');
-                exit;
+                //exit;
 			}
 		}
 		else
@@ -81,8 +82,5 @@
                 echo "</tr>";        
             //Insert the test here;
         }
-    }
-
-    
-    
+    }  
 ?>

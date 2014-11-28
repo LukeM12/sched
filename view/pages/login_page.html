@@ -1,5 +1,5 @@
-<form method="post" action="controller/login.php" onsubmit="return Validation.validateLoginForm();">
-    <table>
+<form> <!--  method="post"  action="controller/login.php" onsubmit="return Validation.validateLoginForm();">
+ -->   <table>
         <tr>
             <td><b><i>Student Number:</i></b>b></td>
             <td><input class="loginField" name="StudentNum" id="loginStudentNum" type="text"/></td>
@@ -9,7 +9,9 @@
             <td><input class="loginField" name="Password" id="loginPassword" type="password"/></td>
         </tr>
         <tr>
-      <input id="Submit" class="submit_btn" name="submit" type="submit" value="Submit">
+      <input id="Submit" class="submit_btn" name="submit" type="submit" value="Submit" onclick="SubmitForm()">
         </tr>
-    </table>
-    </form>
+   </table>
+</form>
+
+<button onclick="SubmitForm()"> Click Me </button>
