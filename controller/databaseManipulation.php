@@ -16,7 +16,7 @@ function getStudentInfo($DB){
     return $result->fetch_assoc();
 }
 
-function populateCoursesTaken_offCourse($DB){
+/*function populateCoursesTaken_offCourse($DB){
     $studentInfoRow = getStudentInfo($DB);
     
     foreach ($_POST['class'] as $taken) {
@@ -25,7 +25,7 @@ function populateCoursesTaken_offCourse($DB){
         $DB->execute($sql);
     }
     echo "DONE";
-}
+}*/
 
 /** 
  * Description: Populate a the courses taken from an oncourse student 
@@ -82,13 +82,13 @@ function populateCoursesNeeded_offCourse($DB){
     while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
         $format = "SELECT * FROM courses_Taken 
                    WHERE studentID='%s' AND courseName='%s';";
-        $sql = sprintf($format,$studentID,$row_ce_req['courseName']);
+        $sql = sprintf($format,$studentInfoRow['studentID'],$row_ce_req['courseName']);
         $result_ct = $DB->execute($sql);
                 
         $row_ct = $result_ct->num_rows;
         if($row_ct == 0){
             $sql = "INSERT INTO courses_Needed (studentID, courseName, year, term)
-                    SELECT '$studentID', ce_program.courseName, ce_program.year, ce_program.term
+                    SELECT '".$studentInfoRow['studentID']."', ce_program.courseName, ce_program.year, ce_program.term
                     FROM ce_program
                     WHERE ce_program.courseName = '".$row_ce_req['courseName']."';";
             $DB->execute($sql);
