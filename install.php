@@ -19,8 +19,6 @@
 	else {
 		echo "Table exists";
 	}
-    
-
     testInitTables($DB);
     
     
