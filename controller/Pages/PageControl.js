@@ -104,7 +104,7 @@ function SubmitForm(){
 	//alert(a.value);
 	xmlhttp.open("POST","controller/login.php",true);
 	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xmlhttp.send("Password=" + pass.value + "&StudentNum=" + num.value);
+	xmlhttp.send("Password=" + pass.value + "&StudentNum=" + num.value +"&typeofrequest=LoginSubmit");
 }
 /**
  * Description: Load the Page for Logging in, into the main Div

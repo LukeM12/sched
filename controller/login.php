@@ -8,10 +8,21 @@
 <?php
     require_once("../model/db.php");
     require_once("../install.php");
+    require_once("../controller/databaseManipulation.php");
     $data = new database("uni");
-    $studentID = $_POST['StudentNum']; 
-    $password = $_POST['Password']; 
-    Login($data,$studentID,$password );
+    
+    if(isset($_POST['typeofrequest'])){
+        $typeOfRequest = $_POST['typeofrequest'];
+        
+        if($typeOfRequest === 'LoginSubmit'){
+            $studentID = $_POST['StudentNum']; 
+            $password = $_POST['Password'];
+            Login($data,$studentID,$password );
+        }
+        if($typeOfRequest == 'CourseTakenSubmit'){
+            populateCoursesTaken_offCourse($DB);
+        }
+    }
 
     /**
      * 
@@ -39,7 +50,10 @@
                 	loadOffCoursePage();      	
                 }
 				else if ($user_info['newUser'] == 'T' && $user_info['onCourse'] == 'T'){
-        			echo " NOw you are logged in, take an action";
+                    echo "HERE ";
+        			populateCoursesTaken_onCourse($data);
+                    echo "HERE ";
+                    populateCoursesNeeded_onCourse($data);
                 }	
 			}
 			else {
@@ -68,5 +82,5 @@
 
     function loadOffCoursePage(){
 		 require('../view/offCourse.html'); 
-	 }
+	}
 ?>

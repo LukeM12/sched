@@ -17,7 +17,7 @@
 	}
 	else {
 	}
-    //testInitTables($DB);
+    testInitTables($DB);
     
     
     /**************************************** Database Configuration and Creation ************************************/
