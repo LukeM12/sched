@@ -10,20 +10,12 @@
     require_once("../install.php");
     require_once("../controller/databaseManipulation.php");
     require_once("../controller/schedule/ScheduleClass.php");
+    ini_set('max_execution_time', 90);
     $data = new database("uni");
     
-    if(isset($_POST['typeofrequest'])){
-        $typeOfRequest = $_POST['typeofrequest'];
-        
-        if($typeOfRequest === 'LoginSubmit'){
-            $studentID = $_POST['StudentNum']; 
-            $password = $_POST['Password'];
-            Login($data,$studentID,$password );
-        }
-        if($typeOfRequest == 'CourseTakenSubmit'){
-            populateCoursesTaken_offCourse($DB);
-        }
-    }
+    $studentID = $_POST['StudentNum']; 
+    $password = $_POST['Password'];
+    Login($data,$studentID,$password );
 
     /**
      * 
