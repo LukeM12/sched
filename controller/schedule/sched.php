@@ -13,23 +13,27 @@ class Schedule{
     public function setSectionInCoursesNeeded($DB){
         $sql = "SELECT * FROM courses_Needed WHERE studentID='".$this->studentID."' AND eligible='Y' AND term='F';";
         $eligibleClass = $DB->execute($sql);
-        if(!$eligibleClass)
-        {
-            echo "NO RESULT";
-        }
         while($row_eligibleClass = $eligibleClass->fetch_assoc()){
             $eligibleCourseSplit = explode(" ",$row_eligibleClass['courseName']);
             $format = "SELECT * FROM course WHERE subject='%s' AND courseID='%s' AND term='F' AND instruction_type='LEC';";
             $sql = sprintf($format,$eligibleCourseSplit[0],$eligibleCourseSplit[1]);
-            //echo $row_eligibleClass['courseName']." ".$row_eligibleClass['term']."-------------<br/>";
             $lectures = $DB->execute($sql);
             echo $DB->getError();
             
             $this->getSection($DB, $lectures);
-            /*while($row_courseInfo = $courseInfo->fetch_assoc()){
-                echo $row_courseInfo['subject']." ".$row_courseInfo['courseID'].$row_courseInfo['sequence']." ".$row_courseInfo['term']." ".$row_courseInfo['startTime']."<br/>";
-                if()
-            }*/
+            echo "<br/>";
+        }
+        
+        $sql = "SELECT * FROM courses_Needed WHERE studentID='".$this->studentID."' AND eligible='Y' AND term='W';";
+        $eligibleClass = $DB->execute($sql);
+        while($row_eligibleClass = $eligibleClass->fetch_assoc()){
+            $eligibleCourseSplit = explode(" ",$row_eligibleClass['courseName']);
+            $format = "SELECT * FROM course WHERE subject='%s' AND courseID='%s' AND term='W' AND instruction_type='LEC';";
+            $sql = sprintf($format,$eligibleCourseSplit[0],$eligibleCourseSplit[1]);
+            $lectures = $DB->execute($sql);
+            echo $DB->getError();
+            
+            $this->getSection($DB, $lectures);
             echo "<br/>";
         }
                      
@@ -38,8 +42,8 @@ class Schedule{
     public function getSection($DB, $lectures){
         
         //Check how many sections in that lecture
-        //Only one section
-        if($lectures->num_rows==1){
+        //One or more sections
+        if($lectures->num_rows>=1){
             $course = $lectures->fetch_assoc();
             $sql = "SELECT * FROM courses_Needed 
                     WHERE eligible='Y' AND lecSection != ''";
@@ -53,8 +57,10 @@ class Schedule{
                                        $course['subject']." ".$course['courseID']);
                 $DB->execute($sql);
             }
+            //Classes already exist
             else{
                 $hit = false;
+                //Get class data
                 while($row_courseNeeded = $courseNeeded->fetch_assoc()){
                     $courseDays = str_split($course['days']);
                     $courseNeededDays = str_split($row_courseNeeded['lecDay']);
@@ -63,7 +69,8 @@ class Schedule{
                     {
                         foreach($courseDays as $daysC){
                             if($daysCN == $daysC){
-                                if(($row_courseNeeded['lecEndTime']>$course['startTime']) && ($row_courseNeeded['lecStartTime']<$course['endTime'])){
+                                if( ($row_courseNeeded['lecStartTime']<$course['startTime'] && $row_courseNeeded['lecEndTime']>$course['startTime']) ||
+                                    ($row_courseNeeded['lecStartTime']<$course['endTime'] && $row_courseNeeded['lecEndTime']>$course['endTime']) ){
                                     $hit = true;
                                     break 3;
                                 }
@@ -80,8 +87,8 @@ class Schedule{
                 }
             }
         }
-        elseif($lectures->num_rows>1){
-        }
+        //elseif($lectures->num_rows>1){
+        //}
     }
     
     
