@@ -79,6 +79,7 @@ function populateCoursesNeeded_offCourse($DB){
     $sql = "SELECT * FROM ce_program;";
     $result_ce_req = $DB->execute($sql);
     //Iterate each entry from ce_program and test them against the courses the user has taken
+    //so first find the courses that this user has taken
     while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
         $format = "SELECT * FROM courses_Taken 
                    WHERE studentID='%s' AND courseName='%s';";
@@ -86,6 +87,7 @@ function populateCoursesNeeded_offCourse($DB){
         $result_ct = $DB->execute($sql);
                 
         $row_ct = $result_ct->num_rows;
+        //Then put the courses that the user has selected in the courses_Needed table
         if($row_ct == 0){
             $sql = "INSERT INTO courses_Needed (studentID, courseName, year, term)
                     SELECT '".$studentInfoRow['studentID']."', ce_program.courseName, ce_program.year, ce_program.term

@@ -12,7 +12,8 @@ require_once("../model/db.php");
 CreateAccount();
 
 function CreateAccount(){
-		$connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+		$connection = new database("uni");//mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+
         $login = $_POST['StudentNum'];
         $password = $_POST['Password'];
         $firstName = $_POST['FirstName'];

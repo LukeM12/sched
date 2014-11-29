@@ -1,6 +1,6 @@
 <?php
 
-$connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+$connection = new database("uni");//mysqli_connect("127.0.0.1", "root", "oops123", "uni");
 printCoursesNeeded($connection);
 /*
  * Description :Store the classes that the user specified that they took in the DB 

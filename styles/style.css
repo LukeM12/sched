@@ -10,10 +10,12 @@ html {
 #nav {
     line-height:30px;
     background-color:#eeeeee;
-	height:600;
+
+    padding:5px;
+
+    height:600;
 	width:300px;
     float:left;
-    padding:5px;
 }
 #buttonWrapper {
 	text-align:center;
@@ -50,42 +52,6 @@ button {
 body {
     background-color: #b0c4de;
 }
-#loginView {
-
-}
-#signupView {
-
-}
-div.menu2
-{
-    /*width:500px;margin:0 auto;*//*Uncomment this line to make the menu center-aligned.*/
-    text-align:center;
-    background-image: url(bg1.gif);
-    border:1px solid black;
-    font-size:0;
-}
-
-div.menu2 a
-{
-    display: inline-block;
-    padding: 0 20px;
-    background-image: url(bg.gif);
-    color:black;
-    text-decoration:none;
-    font: bold 12px Arial;
-    line-height: 32px;
-}
-
-div.menu2 a:hover, div.menu2 a.current
-{
-    background-position:0 -60px;
-}
-
-div.menu2 a.dummy
-{
-    width:2px;
-    padding:0 0;
-}
 
 nav ul {
 	background: #efefef; 
@@ -116,7 +82,7 @@ table, td  {
 
 }
 	nav ul li a {
-		display: block; padding: 25px 140px;
+		display: block; padding: 25px 80px;
 		color: #757575; text-decoration: none;
 	}
 	
@@ -125,10 +91,11 @@ table, td  {
 	position: absolute; top: 100%;
 }
 	nav ul ul li {
-		float: none; 
-		border-top: 1px solid #6b727c;
-		border-bottom: 1px solid #575f6a;
+
 		position: relative;
+				float: none; 
+		border-top: 1px solid #2b727c;
+		border-bottom: 1px solid #575f6a;
 	}
 		nav ul ul li a {
 			padding: 15px 80px;

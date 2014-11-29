@@ -2,7 +2,7 @@
 //Scripting to Do some OnCourse Logic 
 $login = $_COOKIE['user'];
 $classesTaken = array();
-$connection = mysqli_connect("127.0.0.1", "root", "oops123", "uni");
+$connection = new database("uni");//mysqli_connect("127.0.0.1", "root", "oops123", "uni");
 $sql = "SELECT * FROM student WHERE studentID = '$login';";
 $id = $connection->query($sql);
 $row_id = $id->fetch_assoc();
