@@ -108,7 +108,7 @@ function setEligibleCourses($DB, $studentInfoRow){
     $sql = "SELECT * FROM courses_Needed WHERE studentID = '".$studentInfoRow['studentID']."';";
     
     $courses_needed = $DB->execute($sql);
-    echo "Courses that are eligible for student ".$studentInfoRow['studentID'].":<br/>";
+    //echo "Courses that are eligible for student ".$studentInfoRow['studentID'].":<br/>";
     while($row_courses_needed = $courses_needed->fetch_array(MYSQLI_ASSOC)){
         //Check if the class is in prereq table. If its not then student is eligible to take it.
         //row  course Needed is a row of the course that the user needs objectively.
@@ -191,9 +191,17 @@ function setEligibleCourses($DB, $studentInfoRow){
         }
         $sql = "UPDATE courses_Needed SET eligible='".$eligible."' WHERE courseName = '".$row_courses_needed['courseName']."';";
         $result = $DB->execute($sql);
-        if ($eligible == 'Y'){
+        /*if ($eligible == 'Y'){
             echo $row_courses_needed['courseName']."<br/>";
-        }
+        }*/
     }
+    $sql = "SELECT * FROM courses_Needed WHERE eligible='Y'";
+    $result_table = $DB->execute($sql);
+    echo "Eligible course for student ".$studentInfoRow['studentID'].":<br/>";
+    echo "<br/><table><tr><th>CourseName</th><th>Year</th><th>Term</th></tr>";
+    while ($row_table = $result_table->fetch_assoc()){
+        echo "<tr><td>".$row_table['courseName']."</td><td>".$row_table['year']."</td><td>".$row_table['term']."</td></tr>";
+    }
+    echo "</table>";
 }
 ?>
