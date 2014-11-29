@@ -21,16 +21,15 @@ function CreateAccount(){
         $program = $_POST['program'];
         $onOffCourse = $_POST['onOffCourse'];
 		$sql = "INSERT INTO student (studentID, name, onCourse, password, coursesTaken) VALUES('$login','$firstName', '$onOffCourse', '$password', '')";
-		if($connection->query($sql)){
-			echo "The record is added";
+		if($connection->execute($sql)){
+			require('../view/pages/login_pass.html');
+			header('Refresh:3;url=http:///localhost');
 		}
 		else
 		{
-			echo "The record cannot be added ". mysqli_error($connection);
+		require('../view/pages/login_fail.html');
+		header('Refresh:3;url=http:///localhost');
 		}
-		if($onOffCourse == 'offCourse'){
-					header('Refresh:1;url=/view/offCourse.html');
-					
-		}
+
 }
 ?>

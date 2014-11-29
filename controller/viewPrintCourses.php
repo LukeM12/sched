@@ -12,7 +12,7 @@ function printCoursesNeeded($connection){
     $login = $_COOKIE['user'];
     $classesTaken = array();
     $sql = "SELECT * FROM student WHERE studentID='$login';";
-    $result = $connection->query($sql);
+    $result = $connection->execute($sql);
     $user_data = $result->fetch_assoc();
 
     //We need to populate the courses that the user is required to take 
@@ -42,13 +42,13 @@ function printCoursesNeeded($connection){
     function populateCoursesNeeded($connection, $studentID) {
     
         $sql = "SELECT * FROM ce_program;";
-        $result_ce_req = $connection->query($sql);
+        $result_ce_req = $connection->execute($sql);
         //Iterate each entry from ce_program and test them against the courses the user has taken
         while($row_ce_req = $result_ce_req->fetch_array(MYSQLI_ASSOC)){
             $format = "SELECT * FROM courses_Taken 
                        WHERE studentID='%s' AND courseName='%s';";
             $sql = sprintf($format,$studentID,$row_ce_req['courseName']);
-            $result_ct = $connection->query($sql);
+            $result_ct = $connection->execute($sql);
             echo mysqli_error($connection);
             
             $row_ct = $result_ct->num_rows;
@@ -57,7 +57,7 @@ function printCoursesNeeded($connection){
                     SELECT '$studentID', ce_program.courseName, ce_program.year, ce_program.term
                     FROM ce_program
                     WHERE ce_program.courseName = '".$row_ce_req['courseName']."';";
-                $connection->query($sql);
+                $connection->execute($sql);
                 echo mysqli_error($connection);
             }
         }
@@ -70,12 +70,12 @@ function printCoursesNeeded($connection){
     function coursesEligible($connection, $userData){
         echo $userData['studentID']." is eligible to take:<br/>";
 		$sql = "SELECT * FROM courses_Needed WHERE studentID = '".$userData['studentID']."';";
-		$courses_needed = $connection->query($sql);
+		$courses_needed = $connection->execute($sql);
 		while($row_courses_needed = $courses_needed->fetch_array(MYSQLI_ASSOC)){
             //Check if the class is in prereq table. If its not then student is eligible to take it.
             //row  course Needed is a row of the course that the user needs objectively.
             $sql = "SELECT * FROM course_prereq WHERE courseName = '".$row_courses_needed['courseName']."';";
-            $prereq = $connection->query($sql);
+            $prereq = $connection->execute($sql);
             $row_prereq = $prereq->fetch_assoc();
             if($prereq->num_rows == 0){
                 $eligible = 'Y';
@@ -114,7 +114,7 @@ function printCoursesNeeded($connection){
                     foreach($arrayPreReqCourses as $course){
                         $course = trim($course);
                         $sql = "SELECT courseName FROM courses_Taken WHERE courseName ='".$course."';";
-                        $result = $connection->query($sql);
+                        $result = $connection->execute($sql);
                         if($result->num_rows != 0){ 
                             $hit++;
                             break;
@@ -127,7 +127,7 @@ function printCoursesNeeded($connection){
                     foreach($arrayPreReqCourses as $course){
                         $course = trim($course);
                         $sql = "SELECT courseName FROM courses_Taken WHERE courseName ='".$course."';";
-                        $result = $connection->query($sql);
+                        $result = $connection->execute($sql);
                         if($result->num_rows != 0){
                             $hit++;
                             break;
@@ -140,7 +140,7 @@ function printCoursesNeeded($connection){
                     foreach($arrayPreReqCourses as $course){
                         $course = trim($course);
                         $sql = "SELECT courseName FROM courses_Taken WHERE courseName ='".$course."';";
-                        $result = $connection->query($sql);
+                        $result = $connection->execute($sql);
                         if($result->num_rows != 0){
                             $hit++;
                             break;
@@ -153,7 +153,7 @@ function printCoursesNeeded($connection){
                 //echo $row_prereq['courseName'].": ".$eligible."<br/>"; 
             }
             $sql = "UPDATE courses_Needed SET eligible='".$eligible."' WHERE courseName = '".$row_courses_needed['courseName']."';";
-            $result = $connection->query($sql);
+            $result = $connection->execute($sql);
             if ($eligible == 'Y'){
                 echo $row_courses_needed['courseName']."<br/>";
             }
