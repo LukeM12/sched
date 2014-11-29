@@ -46,7 +46,7 @@ function populateCoursesTaken_onCourse($DB){
     }
 }
 /**
- * Description: Populate the courses taken table from an oncourse student
+ * Description: Populate the courses Needed from courses_taken table
  * @param $DB: Live Instance of the Database
  */
 function populateCoursesNeeded_onCourse($DB){
@@ -97,9 +97,9 @@ function populateCoursesNeeded_offCourse($DB){
     setEligibleCourses($DB, $studentInfoRow);
 }
 /**
- * Description: 
- * @param unknown $DB
- * @param unknown $studentInfoRow
+ * Description: Sets eligibility flag in courses_needed for offCourse students
+ * @param $DB instance
+ * @param $studentInfoRow: previous sql call to retrieve offcourse Student info  
  */
 function setEligibleCourses($DB, $studentInfoRow){
     //Get the courses
@@ -185,10 +185,10 @@ function setEligibleCourses($DB, $studentInfoRow){
             if($hit != $count){
                 $eligible = 'N';
             }
-            //echo $row_prereq['courseName'].": ".$eligible."<br/>"; 
         }
         $sql = "UPDATE courses_Needed SET eligible='".$eligible."' WHERE courseName = '".$row_courses_needed['courseName']."';";
         $result = $DB->execute($sql);
+        echo "Courses that are eligible for student ".$studentInfoRow['studentID'].":<br/>";
         if ($eligible == 'Y'){
             echo $row_courses_needed['courseName']."<br/>";
         }

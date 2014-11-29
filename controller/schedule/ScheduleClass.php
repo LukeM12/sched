@@ -10,8 +10,8 @@ class Schedule{
         $this->DB = $DB;
     }
     /** 
-     * Description: 
-     * @param unknown $DB
+     * Description: Looks for a non conflicting section for each eligible class in fall and winter
+     * @param $DB: database object
      */
     public function setSectionInCoursesNeeded($DB){
         $sql = "SELECT * FROM courses_Needed WHERE studentID='".$this->studentID."' AND eligible='Y' AND term='F';";
@@ -24,7 +24,6 @@ class Schedule{
             echo $DB->getError();
             
             $this->getSection($DB, $lectures);
-            echo "<br/>";
         }
         
         $sql = "SELECT * FROM courses_Needed WHERE studentID='".$this->studentID."' AND eligible='Y' AND term='W';";
@@ -37,7 +36,6 @@ class Schedule{
             echo $DB->getError();
             
             $this->getSection($DB, $lectures);
-            echo "<br/>";
         }
                      
     }
@@ -92,9 +90,12 @@ class Schedule{
                 }
             }
         }
-        //elseif($lectures->num_rows>1){
-        //}
     }
+    
+    /** 
+     * Prints all the non conflict courses that a student is registered into a table 
+     * @param $DB : Live instance of the database
+     */
     
     public function printTable($DB){
         $sql = "SELECT * FROM courses_Needed WHERE term = 'F' AND eligible = 'Y' AND registered ='Y';";
